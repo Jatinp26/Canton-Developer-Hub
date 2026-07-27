@@ -1,6 +1,6 @@
-# Canton Developer Hub
+# Canton Developer Hub — Ecosystem Tool Catalog
 
-> Canton Developer Hub (dev-hub.canton.foundation) is the community maintained catalog of ecosystem tooling for building on Canton Network. This is a plain-text index for AI assistants; the interactive version with filtering is at https://dev-hub.canton.foundation.
+> Canton Developer Hub (dev-hub.canton.foundation) is the community-maintained catalog of ecosystem tooling for building on Canton Network. This is a plain-text index for AI assistants; the interactive version with filtering is at https://dev-hub.canton.foundation.
 
 ## AI Tools
 

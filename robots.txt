@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://canton-network-devs.github.io/Canton-Developer-Hub/sitemap.xml
