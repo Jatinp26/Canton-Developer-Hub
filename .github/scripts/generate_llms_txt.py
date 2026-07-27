@@ -20,7 +20,7 @@ def generate_txt(tools, by_category):
     lines = [
         "# Canton Developer Hub",
         "",
-        "> Canton Developer Hub (dev-hub.canton.foundation) is the community maintained catalog of ecosystem tooling for building on Canton Network. This is a plain-text index for AI assistants; the interactive version with filtering is at https://dev-hub.canton.foundation.",
+        "> Canton Developer Hub (dev-hub.canton.foundation) is the community maintained catalog of ecosystem tooling for building on Canton Network This is a plain-text index for AI assistants; the interactive version with filtering is at https://dev-hub.canton.foundation.",
         "",
     ]
     for category in sorted(by_category):
@@ -45,19 +45,64 @@ def generate_txt(tools, by_category):
     return "\n".join(lines)
 
 def generate_html(tools, by_category):
+    page_url = "https://canton-network-devs.github.io/Canton-Developer-Hub/catalog.html"
+    site_url = "https://canton-network-devs.github.io/Canton-Developer-Hub/"
+    list_items = []
+    for i, t in enumerate(tools, start=1):
+        entry = {
+            "@type": "ListItem",
+            "position": i,
+            "item": {
+                "@type": "SoftwareApplication",
+                "name": t["name"],
+                "description": t.get("desc", ""),
+                "applicationCategory": t.get("category", ""),
+                "creator": {"@type": "Organization", "name": t.get("maker", "Unknown")},
+                "url": t["links"][0]["url"] if t.get("links") else None,
+                "dateModified": t.get("last_updated", ""),
+            },
+        }
+        if t.get("dev_fund"):
+            entry["item"]["funder"] = {
+                "@type": "Organization",
+                "name": "Canton Foundation Dev Fund",
+            }
+        list_items.append(entry)
+    json_ld = json.dumps(
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "Canton Developer Hub — Ecosystem Tool Catalog",
+            "description": (
+                "Community-maintained catalog of ecosystem tooling for building on Canton Network, including official Canton Network SDKs/APIs"
+            ),
+            "numberOfItems": len(tools),
+            "itemListElement": list_items,
+        },
+        indent=None,
+    )
+
     parts = [
         "<!DOCTYPE html>",
         '<html lang="en"><head><meta charset="utf-8">',
-        "<title>Canton Developer Hub</title>",
+        '<meta name="viewport" content="width=device-width, initial-scale=1">',
+        "<title>Canton Developer Hub — Ecosystem Tool Catalog</title>",
         '<meta name="description" content="Static, crawlable index of Canton '
         'Network ecosystem tools, SDKs, and APIs for AI assistants and search engines.">',
+        f'<link rel="canonical" href="{page_url}">',
+        '<meta property="og:type" content="website">',
+        '<meta property="og:title" content="Canton Developer Hub — Ecosystem Tool Catalog">',
+        '<meta property="og:description" content="Community-maintained catalog of '
+        'ecosystem tooling for building on Canton Network.">',
+        f'<meta property="og:url" content="{page_url}">',
+        f'<meta property="og:site_name" content="Canton Developer Hub">',
+        '<script type="application/ld+json">' + json_ld + "</script>",
         "</head><body>",
-        "<h1>Canton Developer Hub</h1>",
+        "<h1>Canton Developer Hub — Ecosystem Tool Catalog</h1>",
         "<p>Canton Developer Hub is the community-maintained catalog of ecosystem "
-        "tooling for building on Canton Network: official Canton Network SDKs/APIs, "
-        "Canton Foundation Dev Fund-funded projects, and other community built tools. "
-        'The interactive version is at <a href="https://canton-network-devs.github.io/'
-        'Canton-Developer-Hub/">the Canton Developer Hub</a>.</p>',
+        "tooling for building on Canton Network — official Canton Network SDKs/APIs, "
+        "Canton Foundation Dev Fund-funded projects, and other community-built tools. "
+        f'The interactive version is at <a href="{site_url}">the Canton Developer Hub</a>.</p>',
     ]
     for category in sorted(by_category):
         parts.append(f"<h2>{html.escape(category)}</h2>")
@@ -85,7 +130,6 @@ def generate_html(tools, by_category):
 def main():
     tools = json.loads(SOURCE.read_text())
     by_category = load_by_category(tools)
-
     DEST_TXT.write_text(generate_txt(tools, by_category))
     DEST_HTML.write_text(generate_html(tools, by_category))
     print(f"Wrote {DEST_TXT} and {DEST_HTML} — {len(tools)} tools across {len(by_category)} categories")
