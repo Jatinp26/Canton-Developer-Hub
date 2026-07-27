@@ -33,13 +33,9 @@ jobs:
         run: |
           cp "main/Github Page/llms.txt" page/llms.txt
           cp "main/Github Page/catalog.html" page/catalog.html
-          cp "main/Github Page/sitemap.xml" page/sitemap.xml
-          cp "main/Github Page/robots.txt" page/robots.txt
-          mkdir -p page/catalog
-          cp "main/Github Page/catalog/"*.html page/catalog/
           cd page
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add llms.txt catalog.html sitemap.xml robots.txt catalog/
-          git diff --cached --quiet || git commit -m "chore: regenerate llms.txt + catalog pages from tools.json [automated]"
+          git add llms.txt catalog.html
+          git diff --cached --quiet || git commit -m "chore: regenerate llms.txt + catalog.html from tools.json [automated]"
           git push origin page
