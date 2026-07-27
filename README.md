@@ -14,8 +14,6 @@ Not sure where to start? Here's something help:
 
 Each tier is a natural next step from the previous one. Start fast, go deeper as you need to.
 
-For LLM Specific use point to this HTML link [Browse the full tool catalog](https://canton-network-devs.github.io/Canton-Developer-Hub/catalog.html) also available as [llms.txt](https://canton-network-devs.github.io/Canton-Developer-Hub/llms.txt) for AI tools.
-
 ## What's Here for Builders then?
 
 ### [Canton Dev Toolings Catalogue](https://dev-hub.canton.foundation/)
