@@ -1,6 +1,8 @@
 # Canton Developer Hub
 A community resource maintained by the **Canton Foundation DevRel**. This repo is the starting point for developers and builders coming to Canton Network, whether you're at a hackathon, a bootcamp, or just exploring what Canton can do.
 
+For LLM Specific use point to this HTML link [Browse the full tool catalog](https://canton-network-devs.github.io/Canton-Developer-Hub/catalog.html) also available as [llms.txt](https://canton-network-devs.github.io/Canton-Developer-Hub/llms.txt) for AI tools.
+
 ## What's In Here
 
 ### [Canton Dev Toolings Guide](./Canton%20Dev%20Toolings%20Guide.md)
