@@ -305,6 +305,27 @@
     "last_updated": "2026-07-16"
   },
   {
+    "name": "Canton DevKit",
+    "maker": "BitDynamics",
+    "type": "partner",
+    "category": "Local Dev",
+    "desc": "CLI and local Web UI for managing Canton LocalNet instances in your development environment: LocalNet lifecycle, DAR management, ledger inspection, Token Standard V2 flows, LocalNet snapshots. CI and developer friendly. Work both as a standalone CLI or as a DPM component.",
+    "links": [
+      {
+        "label": "Docs",
+        "url": "https://bitdynamics-ab.github.io/canton-devkit/"
+      },
+      {
+        "label": "Repo",
+        "url": "https://github.com/bitdynamics-ab/canton-devkit"
+      }
+    ],
+    "daml_sdk_version": null,
+    "maintained_by": "BitDynamics",
+    "dev_fund": true,
+    "last_updated": "2026-08-08"
+  },
+  {
     "name": "Seaport",
     "maker": "5North",
     "type": "partner",
