@@ -4,12 +4,12 @@
 <meta name="giscus:backlink" content="https://dev-hub.canton.foundation">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Canton Developer Hub</title>
+<title>CF Developer Hub</title>
 <link rel="icon" type="svg" href="https://canton-network-devs.github.io/Canton-Developer-Hub/favicon.svg">
 <link rel="alternate icon" type="svg" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
     --yellow:    #F3FF97;
@@ -30,111 +30,249 @@
   html { font-size: 16px; }
   body { font-family: 'IBM Plex Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
   a { color: inherit; text-decoration: none; }
+  button { cursor: pointer; font-family: inherit; }
+
   .disclaimer-bar { background: #030206; border-bottom: 1px solid #875CFF; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 101; }
   .disclaimer-bar-inner { display: flex; align-items: flex-start; gap: 8px; flex: 1; padding: 8px 0; }
   .disclaimer-bar-icon { flex-shrink: 0; width: 14px; height: 14px; margin-top: 2px; opacity: 0.55; }
-  .disclaimer-bar-text { font-size: 13px; font-weight: 300; color: rgba(255, 255, 252, 0.894); line-height: 1.55; }
-  .disclaimer-bar-text strong { font-weight: 500; color: rgba(255, 255, 252, 0.956); }
+  .disclaimer-bar-text { font-size: 12px; font-weight: 300; color: rgba(255,255,252,0.894); line-height: 1.55; }
+  .disclaimer-bar-text strong { font-weight: 500; color: rgba(255,255,252,0.956); }
   .disclaimer-bar-close { flex-shrink: 0; background: none; border: none; cursor: pointer; color: rgba(255,255,252,0.3); font-size: 18px; line-height: 1; padding: 4px 2px; transition: color 0.15s; align-self: flex-start; margin-top: 6px; }
   .disclaimer-bar-close:hover { color: rgba(255,255,252,0.6); }
   .site-header { background: var(--black); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
-  .logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 500; color: var(--white); }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; color: var(--white); }
   .header-actions { display: flex; gap: 8px; align-items: center; }
-  .header-btn { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 400; padding: 6px 14px; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: all 0.15s; }
+  .header-btn { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 400; padding: 6px 14px; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: all 0.15s; }
   .header-btn.outline { border: 1px solid rgba(255,255,252,0.2); color: var(--white); background: transparent; }
   .header-btn.outline:hover { border-color: rgba(255,255,252,0.5); }
   .header-btn.filled { border: 1px solid var(--yellow); background: var(--yellow); color: var(--black); font-weight: 500; }
-  .header-btn.filled:hover { background: #e8f080; border-color: #e8f080; }
+  .header-btn.filled:hover { background: #e8f080; }
   @media (max-width: 600px) { .header-btn.outline { display: none; } }
+.devfund-card { padding: 10px 12px; border: 1px solid rgba(76,175,80,0.25); border-radius: 8px; background: rgba(76,175,80,0.04); margin-bottom: 6px; text-decoration: none; color: inherit; display: block; transition: border-color 0.15s, background 0.15s; }
+.devfund-card:last-child { margin-bottom: 0; }
+.devfund-card:hover { border-color: rgba(76,175,80,0.5); background: rgba(76,175,80,0.08); }
+.devfund-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.devfund-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 100px; background: rgba(76,175,80,0.15); color: #2e7d32; border: 1px solid rgba(76,175,80,0.3); white-space: nowrap; flex-shrink: 0; }
+.devfund-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.35; }
+.devfund-date { font-size: 11px; color: var(--hint); margin-top: 2px; }
+.devfund-error { font-size: 12px; color: var(--hint); padding: 8px 0; }
   .hero { background: var(--black); padding: 3.5rem 2rem 3rem; border-bottom: 1px solid rgba(255,255,252,0.08); }
   .hero-inner { max-width: 960px; margin: 0 auto; }
-  .hero-eyebrow { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--taupe); margin-bottom: 0.75rem; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--taupe); margin-bottom: 0.75rem; }
   .hero h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 300; color: var(--white); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1rem; }
   .hero h1 em { font-style: normal; color: var(--yellow); }
-  .hero p { font-size: 16px; font-weight: 300; color: var(--taupe); max-width: 520px; line-height: 1.7; }
-  .main { max-width: 960px; margin: 0 auto; padding: 2rem 1rem 5rem; }
-  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 1rem; }
+  .hero p { font-size: 15px; font-weight: 300; color: var(--taupe); max-width: 520px; line-height: 1.7; }
+  .page-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 3.5rem;
+    align-items: start;
+  }
+  .sidebar {
+    position: sticky;
+    top: 60px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    padding: 2rem 0;
+    border-right: 1px solid var(--border);
+    padding-right: 2rem;
+  }
+  @supports (scrollbar-width: none) {
+    .sidebar {
+      scrollbar-width: none;
+    }
+  }
+  .sidebar::-webkit-scrollbar { display: none; }
+  .content-area { padding: 2rem 0 5rem; min-width: 0; }
+.section-title { font-size: 12px; font-weight: 550; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; margin-top: 1rem; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .whats-new-grid { display: flex; flex-direction: column; gap: 0; }
+  .whats-new-col-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin-bottom: 8px; margin-top: 10px;}
+  .video-card { display: flex; gap: 8px; align-items: flex-start; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); transition: border-color 0.15s; text-decoration: none; color: inherit; margin-bottom: 6px; }
+  .video-card:hover { border-color: var(--border-md); box-shadow: 0 2px 8px rgba(3,2,6,0.08); }
+  .video-thumb { width: 80px; height: 45px; object-fit: cover; border-radius: 5px; flex-shrink: 0; background: var(--surface); }
+  .video-thumb-placeholder { width: 80px; height: 45px; border-radius: 5px; flex-shrink: 0; background: var(--surface); display: flex; align-items: center; justify-content: center; }
+  .video-thumb-placeholder svg { width: 20px; height: 20px; opacity: 0.3; }
+  .video-info { flex: 1; min-width: 0; }
+  .video-title { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .video-date { font-size: 11px; color: var(--hint); margin-top: 4px; }
+  .video-badge { display: inline-block; font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; background: #ff0000; color: white; margin-bottom: 4px; }
+  .new-tool-card { padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); transition: border-color 0.15s; margin-bottom: 8px; }
+  .new-tool-card:last-child { margin-bottom: 0; }
+  .new-tool-card:hover { border-color: var(--border-md); }
+  .new-tool-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  .new-tool-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .new-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 100px; background: var(--yellow); color: var(--black); }
+  .new-tool-desc { font-size: 12px; color: var(--muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ai-suggester { background: linear-gradient(135deg, #030206 0%, #0f0b1a 100%); border: 1px solid rgba(135,92,255,0.3); border-radius: 14px; padding: 2.5rem; position: relative; overflow: hidden; margin-bottom: 2.5rem; }
+  .ai-suggester::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(135,92,255,0.15) 0%, transparent 70%); pointer-events: none; }
+  .ai-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .ai-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(135,92,255,0.2); border: 1px solid rgba(135,92,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ai-icon svg { width: 16px; height: 16px; }
+  .ai-title { font-size: 15px; font-weight: 500; color: var(--white); }
+  .ai-subtitle { font-size: 12px; color: rgba(255,255,252,0.45); margin-top: 2px; }
+  .ai-input-row { display: flex; gap: 8px; }
+  .ai-textarea { flex: 1; padding: 10px 14px; background: rgba(255,255,252,0.05); border: 1px solid rgba(135,92,255,0.25); border-radius: 8px; color: var(--white); font-family: inherit; font-size: 13px; font-weight: 300; resize: none; outline: none; height: 52px; transition: border-color 0.15s; line-height: 1.5; }
+  .ai-textarea::placeholder { color: rgba(255,255,252,0.3); }
+  .ai-textarea:focus { border-color: rgba(135,92,255,0.55); height: 80px; }
+  .ai-submit { padding: 0 18px; background: var(--purple); border: none; border-radius: 8px; color: white; font-size: 13px; font-weight: 500; white-space: nowrap; transition: all 0.15s; flex-shrink: 0; }
+  .ai-submit:hover { background: #7650e8; }
+  .ai-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ai-response { margin-top: 1rem; padding: 12px 14px; background: rgba(255,255,252,0.04); border: 1px solid rgba(255,255,252,0.08); border-radius: 8px; font-size: 13px; font-weight: 300; color: rgba(255,255,252,0.8); line-height: 1.9; display: none; white-space: pre-wrap; }
+  .ai-response.visible { display: block; }
+  .ai-tool-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(135,92,255,0.18); color: #c4b0ff;
+    border: 1px solid rgba(135,92,255,0.35); border-radius: 4px;
+    padding: 1px 8px; font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all 0.13s;
+    white-space: nowrap; vertical-align: middle;
+    font-family: inherit; margin: 0 2px;
+  }
+  .ai-tool-chip:hover { background: rgba(135,92,255,0.32); border-color: rgba(135,92,255,0.6); color: #fff; }
+  .ai-tool-chip::before { content: '↓'; font-size: 10px; opacity: 0.7; }
+  .ai-thinking { display: none; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; color: rgba(255,255,252,0.4); }
+  .ai-thinking.visible { display: flex; }
+  .ai-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--purple); animation: pulse 1.2s ease-in-out infinite; }
+  .ai-dot:nth-child(2) { animation-delay: 0.2s; }
+  .ai-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 1rem; }
   .search-wrap { position: relative; flex: 1; min-width: 200px; }
   .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; opacity: 0.4; pointer-events: none; }
-  #search { width: 100%; height: 40px; padding: 0 12px 0 36px; border: 1px solid var(--border); border-radius: 100px; background: var(--bg); font-family: inherit; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.15s; }
+  #search { width: 100%; height: 38px; padding: 0 12px 0 36px; border: 1px solid var(--border); border-radius: 100px; background: var(--bg); font-family: inherit; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.15s; }
   #search:focus { border-color: var(--purple); }
   #search::placeholder { color: var(--hint); }
   .divider { width: 1px; height: 22px; background: var(--border); flex-shrink: 0; }
   .pills { display: flex; flex-wrap: wrap; gap: 6px; }
-  .pill { height: 34px; padding: 0 16px; border-radius: 100px; border: 2px solid var(--border); background: var(--bg); color: var(--muted); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.13s; }
+  .pill { height: 34px; padding: 0 16px; border-radius: 100px; border: 2px solid var(--border); background: var(--bg); color: var(--muted); font-family: inherit; font-size: 14px; font-weight: 500; white-space: nowrap; transition: all 0.13s; }
   .pill:hover { border-color: var(--border-md); color: var(--text); }
   .pill.active { background: var(--black); color: var(--lilac); border-color: var(--black); font-weight: 600; }
   .pill.p-official.active { background: var(--black); color: var(--purple); border-color: var(--black); }
   .pill.p-partner.active { background: transparent; color: var(--purple); border-color: var(--purple); font-weight: 600; }
   .pill.p-devfund.active { background: #0a1a0a; color: #7dde7d; border-color: #4caf50; font-weight: 600; }
-  .meta-row { display: flex; align-items: center; margin-bottom: 1rem; }
-  .count { font-size: 13px; color: var(--hint); }
-  .state-msg { text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 15px; font-weight: 300; }
-  .state-msg strong { display: block; font-size: 17px; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+  .meta-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .count { font-size: 12px; color: var(--hint); }
+  .compare-hint { font-size: 11px; color: var(--hint); }
+  .compare-hint span { color: var(--purple); font-weight: 500; }
+  .state-msg { text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: 14px; font-weight: 300; }
+  .state-msg strong { display: block; font-size: 16px; font-weight: 500; margin-bottom: 6px; color: var(--text); }
   .state-msg a { color: var(--lilac); text-decoration: underline; }
   .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--purple); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 1rem; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
-  .card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.6rem 1.6rem; display: flex; flex-direction: column; gap: 10px; transition: border-color 0.18s, box-shadow 0.16s; }
-  .card:hover { border-color: var(--border-md); box-shadow: 0 4px 16px rgba(2, 2, 5, 0.14); }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem 1.4rem; display: flex; flex-direction: column; gap: 9px; transition: border-color 0.18s, box-shadow 0.16s; position: relative; }
+  .card:hover { border-color: var(--border-md); box-shadow: 0 4px 16px rgba(2,2,5,0.1); }
+  .card.selected { border-color: var(--purple); box-shadow: 0 0 0 2px rgba(135,92,255,0.15); }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-  .card-name { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.3; letter-spacing: -0.01em; }
-  .card-maker { font-size: 13px; color: var(--hint); margin-top: 2px; font-weight: 600; }
-  .badge { font-size: 13px; font-weight: 600; padding: 3px 9px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; }
+  .card-name { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.3; letter-spacing: -0.01em; }
+  .card-maker { font-size: 12px; color: var(--hint); margin-top: 2px; font-weight: 600; }
+  .badge { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; }
   .badge.official { background: var(--yellow); color: var(--black); }
   .badge.partner  { background: rgba(213,165,227,0.25); color: #4a2060; }
-  .badge-devfund {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 12px; font-weight: 600; padding: 2px 9px;
-    border-radius: 100px;
-    background: rgba(76,175,80,0.12);
-    color: #2e7d32;
-    border: 1px solid rgba(76,175,80,0.35);
-    white-space: nowrap;
-  }
-  .cat-tag { display: inline-block; width: fit-content; font-size: 13px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--surface); color: var(--muted); border: 1px solid rgba(3,2,6,0.20); }
-  .card-desc { font-size: 13px; font-weight: 400; color: var(--muted); line-height: 1.65; flex: 1; }
+  .cat-tag { display: inline-block; width: fit-content; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--surface); color: var(--muted); border: 1px solid rgba(3,2,6,0.20); }
+  .badge-devfund { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: rgba(76,175,80,0.12); color: #2e7d32; border: 1px solid rgba(76,175,80,0.35); white-space: nowrap; }
+  .card-desc { font-size: 12px; font-weight: 400; color: var(--muted); line-height: 1.65; flex: 1; }
   .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
-  .card-link { font-size: 13px; font-weight: 400; color: var(--purple); display: flex; align-items: center; gap: 3px; transition: opacity 0.12s; }
+  .card-link { font-size: 12px; font-weight: 400; color: var(--purple); display: flex; align-items: center; gap: 3px; transition: opacity 0.12s; }
   .card-link:hover { opacity: 0.7; text-decoration: underline; }
   .card-link svg { width: 11px; height: 11px; flex-shrink: 0; }
-  .card-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
-  .last-updated { font-size: 11.2px; font-weight: 500; color: #313130; }
-  .last-updated.stale { color: #c0780a; font-weight: 500; }
-  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--border); gap: 8px; }
-  .vote-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 100px; border: 1.5px solid var(--border); background: var(--bg); color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+  .card-meta { font-size: 11px; color: var(--hint); }
+  .card-meta.stale { color: #c0780a; font-weight: 500; }
+  .compare-label {
+    display: flex; align-items: center; gap: 5px;
+    cursor: pointer; font-size: 11px; color: var(--muted);
+    -webkit-user-select: none;
+    flex-shrink: 0; user-select: none;
+  }
+  .compare-label:hover { color: var(--text); }
+  .compare-check {
+    width: 15px; height: 15px; border-radius: 3px;
+    border: 1.5px solid #aaa;
+    background: #f0eef8;
+    appearance: none; cursor: pointer;
+    transition: all 0.13s; flex-shrink: 0;
+    position: relative;
+  }
+  .compare-check:checked { background: var(--purple); border-color: var(--purple); }
+  .compare-check:checked::after { content: '✓'; position: absolute; top: -1px; left: 2px; color: white; font-size: 10px; font-weight: 700; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--border); gap: 6px; }
+  .vote-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 100px; border: 1.5px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; font-weight: 500; white-space: nowrap; flex-shrink: 0; transition: all 0.15s; }
   .vote-btn:hover { border-color: var(--purple); color: var(--purple); background: rgba(135,92,255,0.05); }
   .vote-btn.active { border-color: var(--purple); color: var(--purple); background: rgba(135,92,255,0.08); }
-  .vote-btn .thumb { font-size: 14px; line-height: 1; }
-  .reaction-count { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--hint); font-weight: 400; white-space: nowrap; opacity: 0; transition: opacity 0.4s; }
+  .reaction-count { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--hint); white-space: nowrap; opacity: 0; transition: opacity 0.4s; }
   .reaction-count.visible { opacity: 1; }
-  .reaction-count .rc-num { font-size: 13px; font-weight: 600; color: var(--purple); }
+  .reaction-count .rc-num { font-size: 12px; font-weight: 600; color: var(--purple); }
+  .compare-panel {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 480px;
+    background: var(--white); border-left: 1px solid var(--border);
+    z-index: 200; display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform 0.3s ease;
+    box-shadow: -8px 0 32px rgba(3,2,6,0.12);
+  }
+  .compare-panel.open { transform: translateX(0); }
+  .compare-panel-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .compare-panel-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .compare-panel-close { background: none; border: none; font-size: 20px; color: var(--muted); line-height: 1; padding: 2px 4px; transition: color 0.13s; }
+  .compare-panel-close:hover { color: var(--text); }
+  .compare-panel-body { flex: 1; overflow-y: auto; padding: 1rem 1.25rem; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare-table th { text-align: left; padding: 8px 10px; background: var(--surface); font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+  .compare-table td { padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; color: var(--text); font-size: 12px; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .row-label { font-weight: 500; color: var(--muted); font-size: 11px; background: var(--surface); }
+  .compare-clear-btn { width: 100%; padding: 8px; background: none; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; color: var(--muted); transition: all 0.13s; flex-shrink: 0; margin: 0 1.25rem 1rem; width: calc(100% - 2.5rem); }
+  .compare-clear-btn:hover { border-color: var(--border-md); color: var(--text); }
+  .compare-bar { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--black); border: 1px solid rgba(255,255,252,0.15); border-radius: 100px; padding: 10px 18px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--white); box-shadow: 0 8px 24px rgba(3,2,6,0.25); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; transform: translateX(-50%) translateY(10px); }
+  .compare-bar.visible { opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0); }
+  .compare-bar-count { font-weight: 500; }
+  .compare-bar-btn { background: var(--yellow); color: var(--black); border: none; border-radius: 100px; padding: 6px 14px; font-size: 12px; font-weight: 600; transition: background 0.13s; }
+  .compare-bar-btn:hover { background: #e8f080; }
+  .compare-bar-clear { background: none; border: none; color: rgba(255,255,252,0.4); font-size: 11px; transition: color 0.13s; }
+  .compare-bar-clear:hover { color: rgba(255,255,252,0.8); }
   .giscus-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(3,2,6,0.45); align-items: center; justify-content: center; }
   .giscus-overlay.open { display: flex; }
   .giscus-panel { background: var(--white); border-radius: 16px; border: 1px solid var(--border); width: min(480px, calc(100vw - 2rem)); max-height: 85vh; overflow-y: auto; box-shadow: 0 24px 64px rgba(3,2,6,0.25); display: flex; flex-direction: column; }
   .giscus-panel-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .giscus-panel-title { font-size: 14px; font-weight: 500; color: var(--text); }
-  .giscus-panel-sub { font-size: 12px; color: var(--hint); margin-top: 2px; }
-  .giscus-panel-close { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--hint); line-height: 1; padding: 2px 4px; transition: color 0.15s; flex-shrink: 0; }
+  .giscus-panel-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .giscus-panel-sub { font-size: 11px; color: var(--hint); margin-top: 2px; }
+  .giscus-panel-close { background: none; border: none; font-size: 20px; color: var(--hint); line-height: 1; padding: 2px 4px; transition: color 0.15s; }
   .giscus-panel-close:hover { color: var(--text); }
   .giscus-panel-body { padding: 12px 18px 16px; min-height: 120px; }
-  .giscus-panel-body .giscus { margin: 0 !important; }
   .giscus-panel-body iframe { width: 100% !important; border: none !important; }
-  .panel-loading { text-align: center; padding: 2rem; color: var(--hint); font-size: 14px; }
+  .panel-loading { text-align: center; padding: 2rem; color: var(--hint); font-size: 13px; }
   .panel-spinner { width: 22px; height: 22px; border: 2px solid var(--border); border-top-color: var(--purple); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
-  .empty { grid-column: 1/-1; text-align: center; padding: 3rem 1rem; color: var(--hint); font-size: 14px; }
-  .empty strong { display: block; font-size: 16px; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
-  .site-footer { background: var(--black); padding: 2rem; text-align: center; font-size: 13px; color: var(--taupe); border-top: 1px solid rgba(255,255,252,0.06); font-weight: 300; }
+  .site-footer { background: var(--black); padding: 2rem; text-align: center; font-size: 12px; color: var(--taupe); border-top: 1px solid rgba(255,255,252,0.06); font-weight: 300; }
   .site-footer a { color: var(--yellow); }
   .site-footer a:hover { text-decoration: underline; }
+  @media (max-width: 900px) {
+    .page-layout { grid-template-columns: 1fr; padding: 0 1.25rem; }
+    .sidebar { position: static; max-height: none; padding: 1.5rem 0 0; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
   @media (max-width: 600px) {
     .hero { padding: 2.5rem 1.25rem 2rem; }
-    .main { padding: 1.5rem 1rem 3rem; }
     .site-header { padding: 0 1.25rem; }
     .disclaimer-bar { padding: 0 1.25rem; }
     .controls { flex-direction: column; align-items: stretch; }
     .divider { display: none; }
+    .compare-panel { width: 100%; }
+    .grid { grid-template-columns: 1fr; }
+    .page-layout { padding: 0 1rem; }
   }
+  .video-card-loading { opacity: 0.4; }
+  .video-shimmer-title { background: var(--surface); height: 12px; border-radius: 4px; margin-bottom: 6px; }
+  .video-shimmer-date  { background: var(--surface); height: 10px; border-radius: 4px; width: 60%; }
+  .feed-loading { font-size: 12px; color: var(--hint); padding: 8px 0; }
+  .cat-pills-row { margin-bottom: 1.25rem; }
+  .compare-hint { display: none; }
 </style>
 </head>
 <body>
@@ -142,8 +280,7 @@
 <div class="disclaimer-bar" id="disclaimer-bar">
   <div class="disclaimer-bar-inner">
     <svg class="disclaimer-bar-icon" viewBox="0 0 16 16" fill="none" stroke="rgba(255,255,252,0.55)" stroke-width="1.5">
-      <circle cx="8" cy="8" r="6.5"/>
-      <path d="M8 5v3.5M8 11v.5" stroke-linecap="round"/>
+      <circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11v.5" stroke-linecap="round"/>
     </svg>
     <p class="disclaimer-bar-text">
       <strong>Disclaimer:</strong> The tools, libraries, and resources labeled as 'Community' in this repository are submitted by third-party developers and ecosystem partners. They are not audited, endorsed, officially maintained, or guaranteed by the Canton Foundation.
@@ -161,13 +298,64 @@
 </header>
 <section class="hero">
   <div class="hero-inner">
-    <p class="hero-eyebrow">All Open-Source</p>
+    <p class="hero-eyebrow">Canton Ecosystem</p>
     <h1>Developer <em>Tooling</em></h1>
     <p>Tools, SDKs, APIs, and AI Infrastructure for Building on Canton Network. Official and community-built, all in one place.</p>
   </div>
 </section>
-<main class="main">
-  <div class="controls" style="margin-top:1.5rem;">
+<div class="page-layout">
+<aside class="sidebar">
+<div class="section sidebar-section">
+  <div class="section-title">What's New</div>
+  <div class="whats-new-grid">
+    <div>
+      <div class="whats-new-col-title">Latest from Canton YouTube</div>
+      <div id="youtube-feed">
+        <div class="video-card video-card-loading">
+          <div class="video-thumb-placeholder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="video-info"><div class="video-title video-shimmer-title"></div><div class="video-date video-shimmer-date"></div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="whats-new-col-title">Recently added tools</div>
+      <div id="new-tools-feed">
+        <div class="feed-loading">Loading…</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section sidebar-section">
+  <div class="whats-new-col-title">Dev Fund — Recent Approvals</div>
+  <div id="devfund-feed"><div class="devfund-error">Loading…</div></div>
+</div>
+</aside>
+<div class="content-area">
+<div class="section-title catalogue-title">Ask AI: Find the right tools</div>
+<div class="ai-suggester ai-box">
+  <div class="ai-header">
+    <div class="ai-icon">
+      <svg viewBox="-2 0 24 24" fill="none" stroke="rgba(135,92,255,0.9)" stroke-width="1.5">
+<path d="M10 2l2.4 7.6 7.6 2.4-7.6 2.4-2.4 7.6-2.4-7.6-7.6-2.4 7.6-2.4 2.4-7.6z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="ai-title">What are you building?</div>
+      <div class="ai-subtitle">Describe your project Idea and get personalized tool recommendations from Dev Hub AI</div>
+    </div>
+  </div>
+  <div class="ai-input-row">
+    <textarea class="ai-textarea" id="ai-input" placeholder="e.g. I want to build a DEX on Canton with a React frontend and Indexing with wallet integration…"></textarea>
+    <button class="ai-submit" id="ai-submit" onclick="runAISuggestion()">Ask AI</button>
+  </div>
+  <div class="ai-thinking" id="ai-thinking">
+    <div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>
+    <span>Thinking…</span>
+  </div>
+  <div class="ai-response" id="ai-response"></div>
+</div>
+<div class="section-title catalogue-title">Tool Catalogue</div>
+  <div class="controls">
     <div class="search-wrap">
       <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <circle cx="6.5" cy="6.5" r="4.5"/><path d="M10.5 10.5L14 14"/>
@@ -179,25 +367,38 @@
       <button class="pill active" data-type="all">All</button>
       <button class="pill p-official" data-type="official">Official</button>
       <button class="pill p-partner" data-type="partner">Partner Tooling</button>
-      <button class="pill p-devfund" data-type="devfund">CF Dev Fund Tools</button>
+      <button class="pill p-devfund" data-type="devfund">CF Dev Fund</button>
     </div>
   </div>
-  <div class="pills" id="cat-pills" style="margin-bottom:1.25rem;"></div>
-  <div class="meta-row"><span class="count" id="count"></span></div>
+  <div class="pills cat-pills-row" id="cat-pills"></div>
+  <div class="meta-row">
+    <span class="count" id="count"></span>
+    <span class="compare-hint" id="compare-hint">Select up to <span>3 tools</span> to compare</span>
+  </div>
   <div id="main-content">
-    <div class="state-msg">
-      <div class="spinner"></div>
-      <strong>Loading catalogue…</strong>
-      Fetching tools from the repository
-    </div>
+    <div class="state-msg"><div class="spinner"></div><strong>Loading catalogue…</strong></div>
   </div>
-</main>
+</div>
+</div>
+<div class="compare-bar" id="compare-bar">
+  <span class="compare-bar-count" id="compare-bar-count">0 tools selected</span>
+  <button class="compare-bar-btn" onclick="openComparePanel()">Compare</button>
+  <button class="compare-bar-clear" onclick="clearCompare()">Clear</button>
+</div>
+<div class="compare-panel" id="compare-panel">
+  <div class="compare-panel-header">
+    <span class="compare-panel-title">Tool Comparison</span>
+    <button class="compare-panel-close" onclick="closeComparePanel()">×</button>
+  </div>
+  <div class="compare-panel-body" id="compare-panel-body"></div>
+  <button class="compare-clear-btn" onclick="clearCompare()">Clear selection</button>
+</div>
 <div class="giscus-overlay" id="giscus-overlay">
-  <div class="giscus-panel" id="giscus-panel">
+  <div class="giscus-panel">
     <div class="giscus-panel-header">
       <div>
         <div class="giscus-panel-title" id="panel-title">React to this tool</div>
-        <div class="giscus-panel-sub">Sign in with GitHub to react · reactions are public</div>
+        <div class="giscus-panel-sub">Sign in with GitHub · reactions are public</div>
       </div>
       <button class="giscus-panel-close" id="panel-close" aria-label="Close">×</button>
     </div>
@@ -207,7 +408,7 @@
   </div>
 </div>
 <footer class="site-footer">
-  Maintained by <a href="https://canton.foundation/" target="_blank">Canton Foundation</a>.
+  Maintained by <a href="https://canton.foundation/" target="_blank" rel="noopener noreferrer">Canton Foundation</a> DevRel.
 </footer>
 
 <script>
@@ -217,222 +418,384 @@ const GISCUS_REPO_ID     = "R_kgDOROGJ0g";
 const GISCUS_CATEGORY    = "Tools";
 const GISCUS_CATEGORY_ID = "DIC_kwDOROGJ0s4C95t0";
 const GISCUS_ORIGIN      = "https://giscus.app";
+const GEMINI_API_KEY = "AQ.Ab8RN6KCrUGE-qlFJKdPpml9GnsKdqmkbj65TGsUc1NHchlPDg";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+const YT_CHANNEL_ID      = "UC5Xt611-4AhcGTmlOaPlIQg";
+const YT_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
+  const YT_PROXIES = [
+    `https://corsproxy.io/?${encodeURIComponent(YT_FEED_URL)}`,
+    `https://api.allorigins.win/get?url=${encodeURIComponent(YT_FEED_URL)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(YT_FEED_URL)}`
+  ];
 const EXT = `<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7M8 1h3m0 0v3m0-3L5 7"/></svg>`;
+
 let TOOLS = [], activeType = "all", activeCat = "all", searchQ = "";
-let currentSlug = null;
-let REACTION_COUNTS = {};
+let currentSlug = null, REACTION_COUNTS = {};
+let compareSelected = [];
+let compareMode = false;
+async function fetchDevFundApprovals() {
+  const feed = document.getElementById('devfund-feed');
+  if (!feed) return;
+  try {
+    const res = await fetch(
+      'https://api.github.com/repos/canton-foundation/canton-dev-fund/commits?path=proposals&per_page=10',
+      { headers: { 'Accept': 'application/vnd.github+json' } }
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const commits = await res.json();
+    const approvals = commits
+      .filter(c => {
+        const msg = c.commit.message.toLowerCase();
+        return !msg.startsWith('update readme') && !msg.startsWith('initial commit');
+      })
+      .slice(0, 2);
+    if (!approvals.length) { feed.innerHTML = '<div class="devfund-error">No recent approvals found.</div>'; return; }
+    feed.innerHTML = approvals.map(c => {
+      const msg     = c.commit.message.split('\n')[0];
+      const dateStr = new Date(c.commit.author.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const name    = msg.replace(/^merge pull request #\d+[^:]*:\s*/i,'').replace(/^add\s+/i,'').replace(/^approved:\s*/i,'').replace(/\.md$/i,'').trim();
+      return `<a class="devfund-card" href="${c.html_url}" target="_blank" rel="noopener noreferrer">
+        <div class="devfund-card-top"><span class="devfund-name">${name}</span><span class="devfund-badge">Approved</span></div>
+        <div class="devfund-date">${dateStr}</div>
+      </a>`;
+    }).join('');
+  } catch(e) {
+    feed.innerHTML = '<div class="devfund-error">Could not load approvals.</div>';
+  }
+}
 
 (function() {
   const bar = document.getElementById('disclaimer-bar');
   const hdr = document.getElementById('site-header');
-  function sync() { hdr.style.top = bar.offsetHeight + 'px'; }
+  const sidebar = document.querySelector('.sidebar');
+  function sync() {
+    const h = bar.offsetHeight;
+    hdr.style.top = h + 'px';
+    if (sidebar) sidebar.style.top = (h + 56 + 16) + 'px';
+  }
   sync(); window.addEventListener('resize', sync);
-  document.getElementById('disclaimer-close').addEventListener('click', () => { bar.style.display = 'none'; hdr.style.top = '0px'; });
+  document.getElementById('disclaimer-close').addEventListener('click', () => {
+    bar.style.display='none'; hdr.style.top='0px';
+    if (sidebar) sidebar.style.top = '72px';
+  });
 })();
-function slugify(n) {
-  return 'tool-' + n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
-function formatDate(dateStr) {
-  if (!dateStr) return null;
-  const d = new Date(dateStr);
-  if (isNaN(d)) return null;
-  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-}
-function isStale(dateStr) {
-  if (!dateStr) return false;
-  const d = new Date(dateStr);
-  if (isNaN(d)) return false;
-  const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-  return d < sixMonthsAgo;
-}
+
+function slugify(n) { return 'tool-' + n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+function formatDate(s) { if(!s) return null; const d=new Date(s); return isNaN(d)?null:d.toLocaleDateString('en-US',{month:'short',year:'numeric'}); }
+function isStale(s) { if(!s) return false; const d=new Date(s); if(isNaN(d)) return false; const a=new Date(); a.setMonth(a.getMonth()-6); return d<a; }
 async function fetchAllReactionCounts() {
   try {
-    const res = await fetch(
-      'https://api.github.com/repos/canton-network-devs/Canton-Developer-Hub/discussions?per_page=100',
-      { headers: { 'Accept': 'application/vnd.github+json' } }
-    );
-    if (!res.ok) return;
-    const discussions = await res.json();
-    discussions.forEach(d => {
-      const count = d.reactions?.total_count || 0;
-      if (count > 0) REACTION_COUNTS[d.title] = count;
+    const res = await fetch('https://api.github.com/repos/canton-network-devs/Canton-Developer-Hub/discussions?per_page=100',{headers:{'Accept':'application/vnd.github+json'}});
+    if(!res.ok) return;
+    const d = await res.json();
+    d.forEach(t=>{ const c=t.reactions?.total_count||0; if(c>0) REACTION_COUNTS[t.title]=c; });
+    Object.entries(REACTION_COUNTS).forEach(([s,c])=>updateBadge(s,c));
+  } catch(e){}
+}
+function updateBadge(slug,count) {
+  const el=document.querySelector(`.reaction-count[data-slug="${slug}"]`);
+  if(!el) return;
+  el.querySelector('.rc-num').textContent=count;
+  if(count>0) el.classList.add('visible');
+}
+async function fetchYouTube() {
+  try {
+    let xml = null;
+    for (const proxyUrl of YT_PROXIES) {
+      try {
+        const res = await fetch(proxyUrl);
+        if (!res.ok) continue;
+        const text = await res.text();
+        let xmlText = text;
+        try { xmlText = JSON.parse(text).contents || text; } catch(e) {}
+        const parser = new DOMParser();
+        const parsed = parser.parseFromString(xmlText, 'text/xml');
+        if (parsed.querySelector('entry')) { xml = parsed; break; }
+      } catch(e) { continue; }
+    }
+    if (!xml) throw new Error('All proxies failed');
+    const entries = [...xml.querySelectorAll('entry')].slice(0, 2);
+    const feed = document.getElementById('youtube-feed');
+    if(!entries.length) { feed.innerHTML='<div style="font-size:12px;color:var(--hint);">No videos found.</div>'; return; }
+    feed.innerHTML = entries.map(e => {
+      const title   = e.querySelector('title')?.textContent || '';
+      const link    = e.querySelector('link')?.getAttribute('href') || '#';
+      const videoId = e.querySelector('videoId')?.textContent || link.split('v=')[1] || '';
+      const pubDate = e.querySelector('published')?.textContent || '';
+      const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+      const thumb   = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '';
+      return `<a class="video-card" href="${link}" target="_blank" rel="noopener" style="margin-bottom:8px;display:flex;">
+        ${thumb
+          ? `<img class="video-thumb" src="${thumb}" alt="${title}" loading="lazy" onerror="this.style.display='none'">`
+          : `<div class="video-thumb-placeholder"><svg viewBox="0 0 24 24" fill="var(--muted)"><path d="M8 5v14l11-7z"/></svg></div>`
+        }
+        <div class="video-info">
+          <div class="video-badge">YouTube</div>
+          <div class="video-title">${title}</div>
+          <div class="video-date">${dateStr}</div>
+        </div>
+      </a>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('youtube-feed').innerHTML='<div style="font-size:12px;color:var(--hint);">Could not load videos.</div>';
+  }
+}
+function renderNewTools() {
+  const sorted = [...TOOLS]
+    .filter(t => t.last_updated)
+    .sort((a,b) => new Date(b.last_updated) - new Date(a.last_updated))
+    .slice(0,2);
+  const feed = document.getElementById('new-tools-feed');
+  if(!sorted.length) { feed.innerHTML='<div style="font-size:12px;color:var(--hint);">No recent tools.</div>'; return; }
+  feed.innerHTML = sorted.map(t => `
+    <div class="new-tool-card">
+      <div class="new-tool-top">
+        <span class="new-tool-name">${t.name}</span>
+        <span class="new-badge">New</span>
+      </div>
+      <div class="new-tool-desc">${t.desc}</div>
+    </div>
+  `).join('');
+}
+
+function jumpToTool(slug) {
+  activeType='all'; activeCat='all'; searchQ=''; activeSDK='all';
+  document.getElementById('search').value='';
+  document.querySelectorAll('[data-type]').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-type="all"]').classList.add('active');
+  document.querySelectorAll('[data-cat]').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-cat="all"]')?.classList.add('active');
+  render();
+  setTimeout(()=>{
+    const card=document.querySelector(`[data-card-slug="${slug}"]`);
+    if(card) { card.scrollIntoView({behavior:'smooth',block:'center'}); card.style.boxShadow='0 0 0 2px var(--purple)'; setTimeout(()=>card.style.boxShadow='',2000); }
+  },100);
+}
+
+function highlightTool(slug, name) {
+  activeType='all'; activeCat='all'; searchQ='';
+  document.getElementById('search').value='';
+  document.querySelectorAll('[data-type]').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-type="all"]').classList.add('active');
+  document.querySelectorAll('[data-cat]').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-cat="all"]')?.classList.add('active');
+  render();
+  setTimeout(()=>{
+    const card=document.querySelector(`[data-card-slug="${slug}"]`);
+    if(card){
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+      card.style.transition='box-shadow 0.2s, border-color 0.2s';
+      card.style.boxShadow='0 0 0 3px var(--purple)';
+      card.style.borderColor='var(--purple)';
+      setTimeout(()=>{ card.style.boxShadow=''; card.style.borderColor=''; },2500);
+    } else {
+      searchQ=name;
+      document.getElementById('search').value=name;
+      render();
+    }
+  },100);
+}
+async function callGemini(prompt) {
+  const res = await fetch(GEMINI_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 10000 }
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+async function runAISuggestion() {
+  const input = document.getElementById('ai-input').value.trim();
+  if(!input) return;
+  document.getElementById('ai-submit').disabled = true;
+  document.getElementById('ai-thinking').classList.add('visible');
+  document.getElementById('ai-response').classList.remove('visible');
+  document.getElementById('ai-response').textContent = '';
+  const toolList = TOOLS.map(t=>`- ${t.name} (${t.category}, ${t.type}): ${t.desc.slice(0,100)}`).join('\n');
+  const prompt = `You are a Canton Network developer advisor embedded in the Canton Developer Hub. A developer described what they want to build:\n\n"${input}"\n\nBased on the following available tools, recommend the most relevant ones and explain briefly why each is relevant to their specific use case. Be helpful, specific, and concise. Mention 3-6 tools max.\n\nIMPORTANT: Whenever you mention a tool name, wrap it in double square brackets like this: [[Tool Name]]. Use the exact tool name from the list.\n\nAvailable tools:\n${toolList}`;
+  try {
+    const text = await callGemini(prompt);
+    const cleaned = text.replace(/\*\*/g,'').replace(/###/g,'').replace(/##/g,'').replace(/#/g,'');
+    const rendered = cleaned.replace(/\[\[([^\]]+)\]\]/g, (match, name) => {
+      const slug = 'tool-' + name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+      return `<button class="ai-tool-chip" onclick="highlightTool('${slug}','${name.replace(/'/g,"\'")}')">${name}</button>`;
     });
-    Object.entries(REACTION_COUNTS).forEach(([slug, count]) => updateBadge(slug, count));
-  } catch(e) {}
-}
-function updateBadge(slug, count) {
-  const badge = document.querySelector(`.reaction-count[data-slug="${slug}"]`);
-  if (!badge) return;
-  badge.querySelector('.rc-num').textContent = count;
-  if (count > 0) badge.classList.add('visible');
-}
-
-const overlay    = document.getElementById('giscus-overlay');
-const panelBody  = document.getElementById('panel-body');
-const panelTitle = document.getElementById('panel-title');
-function openPanel(toolName, slug) {
-  if (currentSlug !== slug) {
-    currentSlug = slug;
-    panelTitle.textContent = toolName;
-    panelBody.innerHTML = `<div class="panel-loading"><div class="panel-spinner"></div>Loading reactions…</div>`;
-    const s = document.createElement('script');
-    s.src = GISCUS_ORIGIN + '/client.js';
-    s.setAttribute('data-repo',              GISCUS_REPO);
-    s.setAttribute('data-repo-id',           GISCUS_REPO_ID);
-    s.setAttribute('data-category',          GISCUS_CATEGORY);
-    s.setAttribute('data-category-id',       GISCUS_CATEGORY_ID);
-    s.setAttribute('data-mapping',           'specific');
-    s.setAttribute('data-term',              slug);
-    s.setAttribute('data-strict',            '0');
-    s.setAttribute('data-reactions-enabled', '1');
-    s.setAttribute('data-emit-metadata',     '1');
-    s.setAttribute('data-input-position',    'top');
-    s.setAttribute('data-theme',             'light');
-    s.setAttribute('data-lang',              'en');
-    s.crossOrigin = 'anonymous';
-    s.async = true;
-    panelBody.appendChild(s);
+    document.getElementById('ai-response').innerHTML = rendered;
+    document.getElementById('ai-response').classList.add('visible');
+  } catch(e) {
+    document.getElementById('ai-response').textContent = 'Could not connect to AI. Please try again.';
+    document.getElementById('ai-response').classList.add('visible');
   }
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.getElementById('ai-thinking').classList.remove('visible');
+  document.getElementById('ai-submit').disabled = false;
 }
-
-function closePanel() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
-document.getElementById('panel-close').addEventListener('click', closePanel);
-overlay.addEventListener('click', e => { if (e.target === overlay) closePanel(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
-window.addEventListener('message', (e) => {
-  if (e.origin !== GISCUS_ORIGIN) return;
-  const msg = e.data?.giscus;
-  if (!msg) return;
-  if (msg.resizeHeight) {
-    const loader = panelBody.querySelector('.panel-loading');
-    if (loader) loader.style.display = 'none';
-    const iframe = panelBody.querySelector('iframe');
-    if (iframe) iframe.style.height = msg.resizeHeight + 'px';
-  }
-  if (msg.discussion && currentSlug) {
-    const total = typeof msg.discussion.reactionCount === 'number'
-      ? msg.discussion.reactionCount
-      : Object.values(msg.discussion.reactions || {})
-          .filter(v => typeof v === 'number')
-          .reduce((s, n) => s + n, 0);
-    REACTION_COUNTS[currentSlug] = total;
-    updateBadge(currentSlug, total);
-  }
+document.getElementById('ai-input').addEventListener('keydown', e => {
+  if(e.key==='Enter' && !e.shiftKey) { e.preventDefault(); runAISuggestion(); }
 });
-
+function toggleCompare(slug) {
+  if(compareSelected.includes(slug)) {
+    compareSelected = compareSelected.filter(s=>s!==slug);
+  } else {
+    if(compareSelected.length>=3) return;
+    compareSelected.push(slug);
+  }
+  updateCompareBar();
+  render();
+}
+function updateCompareBar() {
+  const bar = document.getElementById('compare-bar');
+  const count = document.getElementById('compare-bar-count');
+  count.textContent = `${compareSelected.length} tool${compareSelected.length!==1?'s':''} selected`;
+  bar.classList.toggle('visible', compareSelected.length>=2);
+}
+function clearCompare() {
+  compareSelected=[];
+  updateCompareBar();
+  closeComparePanel();
+  render();
+}
+function openComparePanel() {
+  const tools = compareSelected.map(slug=>TOOLS.find(t=>slugify(t.name)===slug)).filter(Boolean);
+  const fields = [
+    ['Type',    t=>t.type==='official'?'Official':'Partner'],
+    ['Category',t=>t.category],
+    ['Maker',   t=>t.maker],
+    ['SDK Version', t=>t.daml_sdk_version||'—'],
+    ['Dev Fund',t=>t.dev_fund?'Yes':'No'],
+    ['Last Updated', t=>formatDate(t.last_updated)||'—'],
+    ['Description', t=>t.desc],
+    ['Links',   t=>(t.links||[]).map(l=>`<a href="${l.url}" target="_blank" rel="noopener noreferrer" style="color:var(--purple)">${l.label}</a>`).join(', ')||'—'],
+  ];
+  const header = `<tr><th>Field</th>${tools.map(t=>`<th>${t.name}</th>`).join('')}</tr>`;
+  const rows   = fields.map(([label,fn])=>`<tr><td class="row-label">${label}</td>${tools.map(t=>`<td>${fn(t)}</td>`).join('')}</tr>`).join('');
+  document.getElementById('compare-panel-body').innerHTML=`<table class="compare-table"><thead>${header}</thead><tbody>${rows}</tbody></table>`;
+  document.getElementById('compare-panel').classList.add('open');
+}
+function closeComparePanel() {
+  document.getElementById('compare-panel').classList.remove('open');
+}
 function buildCatPills() {
-  const cats = ["all", ...new Set(TOOLS.map(t => t.category))];
-  const c = document.getElementById("cat-pills");
-  c.innerHTML = cats.map(cat =>
-    `<button class="pill${cat==="all"?" active":""}" data-cat="${cat}">${cat==="all"?"All categories":cat}</button>`
-  ).join("");
-  c.addEventListener("click", e => {
-    const pill = e.target.closest("[data-cat]");
-    if (!pill) return;
-    activeCat = pill.dataset.cat;
-    c.querySelectorAll("[data-cat]").forEach(p => p.classList.remove("active"));
-    pill.classList.add("active");
-    render();
+  const cats=["all",...new Set(TOOLS.map(t=>t.category))];
+  const c=document.getElementById("cat-pills");
+  c.innerHTML=cats.map(cat=>`<button class="pill${cat==="all"?" active":""}" data-cat="${cat}">${cat==="all"?"All categories":cat}</button>`).join("");
+  c.addEventListener("click",e=>{
+    const p=e.target.closest("[data-cat]"); if(!p) return;
+    activeCat=p.dataset.cat;
+    c.querySelectorAll("[data-cat]").forEach(x=>x.classList.remove("active"));
+    p.classList.add("active"); render();
   });
 }
 function render() {
-  const filtered = TOOLS.filter(t => {
-    const matchType = activeType === "all"
-      ? true
-      : activeType === "devfund"
-        ? t.dev_fund === true
-        : t.type === activeType;
-    const matchCat = activeCat === "all" || t.category === activeCat;
-    const q = searchQ.toLowerCase();
-    const matchQ = !q || [t.name, t.desc, t.maker, t.category].some(s => s.toLowerCase().includes(q));
-    return matchType && matchCat && matchQ;
+  const filtered = TOOLS.filter(t=>{
+    const mt = activeType==="all"?true:activeType==="devfund"?t.dev_fund===true:t.type===activeType;
+    const mc = activeCat==="all"||t.category===activeCat;
+const q  = searchQ.toLowerCase();
+    const mq = !q||[t.name,t.desc,t.maker,t.category].some(s=>s.toLowerCase().includes(q));
+    return mt&&mc&&mq;
   });
   document.getElementById("count").textContent =
-    filtered.length === TOOLS.length ? `${TOOLS.length} tools` : `${filtered.length} of ${TOOLS.length} tools`;
-  const container = document.getElementById("main-content");
-  if (!filtered.length) {
-    container.innerHTML = `<div class="grid"><div class="empty"><strong>No tools found</strong>Try clearing a filter or search term.</div></div>`;
+    filtered.length===TOOLS.length?`${TOOLS.length} tools`:`${filtered.length} of ${TOOLS.length} tools`;
+
+  const compareHint = document.getElementById('compare-hint');
+  compareHint.style.display = 'block';
+  const container=document.getElementById("main-content");
+  if(!filtered.length){
+    container.innerHTML=`<div class="state-msg"><strong>No tools found</strong>Try clearing a filter or search term.</div>`;
     return;
   }
-
-  container.innerHTML = `<div class="grid">${filtered.map(t => {
+  container.innerHTML=`<div class="grid">${filtered.map(t=>{
     const slug    = slugify(t.name);
-    const count   = REACTION_COUNTS[slug] || 0;
+    const count   = REACTION_COUNTS[slug]||0;
     const dateFmt = formatDate(t.last_updated);
     const stale   = isStale(t.last_updated);
-    const devFund = t.dev_fund === true;
+    const devFund = t.dev_fund===true;
+    const isSelected = compareSelected.includes(slug);
     return `
-    <div class="card">
+    <div class="card${isSelected?' selected':''}" data-card-slug="${slug}">
       <div class="card-top">
         <div>
           <div class="card-name">${t.name}</div>
           <div class="card-maker">${t.maker}</div>
         </div>
-        <span class="badge ${t.type}">${t.type === "official" ? "Official" : "Partner tooling"}</span>
+        <span class="badge ${t.type}">${t.type==="official"?"Official":"Partner tooling"}</span>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
         <span class="cat-tag">${t.category}</span>
-        ${devFund ? `<span class="badge-devfund">Dev Fund</span>` : ''}
+        ${devFund?`<span class="badge-devfund">Dev Fund</span>`:''}
       </div>
       <div class="card-desc">${t.desc}</div>
-      ${t.links && t.links.length
-        ? `<div class="card-links">${t.links.map(l =>
-            `<a class="card-link" href="${l.url}" target="_blank" rel="noopener">${EXT}${l.label}</a>`
-          ).join("")}</div>`
-        : ""}
-      ${dateFmt ? `
-      <div class="card-meta">
-        <span class="last-updated${stale ? ' stale' : ''}">
-          Updated ${dateFmt}${stale ? ' · May be outdated' : ''}
-        </span>
-      </div>` : ''}
+      ${t.links&&t.links.length?`<div class="card-links">${t.links.map(l=>`<a class="card-link" href="${l.url}" target="_blank" rel="noopener">${EXT}${l.label}</a>`).join("")}</div>`:""}
+      ${dateFmt?`<div class="card-meta${stale?' stale':''}">Updated ${dateFmt}${stale?' · May be outdated':''}</div>`:''}
       <div class="card-footer">
-        <button class="vote-btn" data-slug="${slug}" data-name="${t.name.replace(/"/g,'&quot;')}">
-          <span class="thumb">👍</span> Helpful
-        </button>
-        <span class="reaction-count${count > 0 ? ' visible' : ''}" data-slug="${slug}">
-          <span class="rc-num">${count}</span>
-          <span>reactions</span>
-        </span>
+        <button class="vote-btn" data-slug="${slug}" data-name="${t.name.replace(/"/g,'&quot;')}">👍 Helpful</button>
+        <label class="compare-label">
+          <input type="checkbox" class="compare-check" ${isSelected?'checked':''} onchange="toggleCompare('${slug}')">
+          <span>Compare</span>
+        </label>
+        <span class="reaction-count${count>0?' visible':''}" data-slug="${slug}"><span class="rc-num">${count}</span> reactions</span>
       </div>
     </div>`;
   }).join("")}</div>`;
-  container.querySelectorAll('.vote-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.classList.add('active');
-      openPanel(btn.dataset.name, btn.dataset.slug);
-    });
+  container.querySelectorAll('.vote-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{ btn.classList.add('active'); openPanel(btn.dataset.name,btn.dataset.slug); });
   });
 }
-
+const overlay=document.getElementById('giscus-overlay');
+const panelBody=document.getElementById('panel-body');
+const panelTitle=document.getElementById('panel-title');
+function openPanel(toolName,slug) {
+  if(currentSlug!==slug){
+    currentSlug=slug; panelTitle.textContent=toolName;
+    panelBody.innerHTML=`<div class="panel-loading"><div class="panel-spinner"></div>Loading reactions…</div>`;
+    const s=document.createElement('script');
+    s.src=GISCUS_ORIGIN+'/client.js';
+    s.setAttribute('data-repo',GISCUS_REPO); s.setAttribute('data-repo-id',GISCUS_REPO_ID);
+    s.setAttribute('data-category',GISCUS_CATEGORY); s.setAttribute('data-category-id',GISCUS_CATEGORY_ID);
+    s.setAttribute('data-mapping','specific'); s.setAttribute('data-term',slug);
+    s.setAttribute('data-strict','0'); s.setAttribute('data-reactions-enabled','1');
+    s.setAttribute('data-emit-metadata','1'); s.setAttribute('data-input-position','top');
+    s.setAttribute('data-theme','light'); s.setAttribute('data-lang','en');
+    s.crossOrigin='anonymous'; s.async=true; panelBody.appendChild(s);
+  }
+  overlay.classList.add('open'); document.body.style.overflow='hidden';
+}
+function closePanel(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('panel-close').addEventListener('click',closePanel);
+overlay.addEventListener('click',e=>{ if(e.target===overlay) closePanel(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') { closePanel(); closeComparePanel(); } });
+window.addEventListener('message',(e)=>{
+  if(e.origin!==GISCUS_ORIGIN) return;
+  const msg=e.data?.giscus; if(!msg) return;
+  if(msg.resizeHeight){ const l=panelBody.querySelector('.panel-loading'); if(l)l.style.display='none'; const i=panelBody.querySelector('iframe'); if(i)i.style.height=msg.resizeHeight+'px'; }
+  if(msg.discussion&&currentSlug){ const t=typeof msg.discussion.reactionCount==='number'?msg.discussion.reactionCount:Object.values(msg.discussion.reactions||{}).filter(v=>typeof v==='number').reduce((s,n)=>s+n,0); REACTION_COUNTS[currentSlug]=t; updateBadge(currentSlug,t); }
+});
+document.getElementById("search").addEventListener("input",e=>{searchQ=e.target.value;render();});
+document.getElementById("type-pills").addEventListener("click",e=>{
+  const p=e.target.closest("[data-type]"); if(!p) return;
+  activeType=p.dataset.type;
+  document.querySelectorAll("[data-type]").forEach(x=>x.classList.remove("active"));
+  p.classList.add("active"); render();
+});
 async function init() {
   try {
-    const res = await fetch(TOOLS_URL + "?nocache=" + Date.now());
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    TOOLS = await res.json();
-    if (!Array.isArray(TOOLS) || !TOOLS.length) throw new Error("tools.json is empty or malformed.");
+    const res=await fetch(TOOLS_URL+"?nocache="+Date.now());
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    TOOLS=await res.json();
+    if(!Array.isArray(TOOLS)||!TOOLS.length) throw new Error("tools.json is empty.");
     buildCatPills();
+    fetchDevFundApprovals();
+    renderNewTools();
     render();
     fetchAllReactionCounts();
-  } catch (err) {
-    document.getElementById("main-content").innerHTML = `
-      <div class="state-msg"><strong>Could not load catalogue</strong>${err.message}<br><br>
-      <a href="https://github.com/canton-network-devs/Canton-Developer-Hub/blob/main/Github%20Page/tools.json" target="_blank">View tools.json →</a></div>`;
-    document.getElementById("count").textContent = "";
+    fetchYouTube();
+  } catch(err){
+    document.getElementById("main-content").innerHTML=`<div class="state-msg"><strong>Could not load catalogue</strong>${err.message}</div>`;
   }
 }
-document.getElementById("search").addEventListener("input", e => { searchQ = e.target.value; render(); });
-document.getElementById("type-pills").addEventListener("click", e => {
-  const pill = e.target.closest("[data-type]");
-  if (!pill) return;
-  activeType = pill.dataset.type;
-  document.querySelectorAll("[data-type]").forEach(p => p.classList.remove("active"));
-  pill.classList.add("active");
-  render();
-});
 init();
 </script>
 </body>
