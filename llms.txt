@@ -5,7 +5,7 @@
 ## AI Tools
 
 - [AI Agentic Wallet](https://github.com/Denend/agent-wallet-canton): Enables AI agents to Create&Manage a Canton wallet and Request initial testnet funding via faucet amd continue using the same wallet for subsequent interactions — Maker: FTP. Type: partner. Last updated: 2026-07-16.
-- [CCPedia](https://ccpedia.xyz): AI-accessible knowledge base over the Canton ecosystem - CIPs, forum, GitHub, Dev Fund proposals, docs, blog, videos and more. Three AI endpoints: MCP server, REST API, llms.txt. Plus web UI for human research. — Maker: Unity Nodes. Type: partner. Last updated: 2026-07-16.
+- [CCPedia](https://ccpedia.xyz): AI-accessible knowledge base over the Canton - CIPs, forum, GitHub, Dev Fund proposals, docs, blog, videos and more. Three AI endpoints: MCP server, REST API, llms.txt. Plus web UI for human research. — Maker: Unity Nodes. Type: partner. Last updated: 2026-07-16.
 - [Canton Foundation MCP](https://github.com/canton-network-devs/Build-on-Canton-MCP): MCP server that plugs accurate Canton docs directly into Claude and other AI tools. Prevents hallucinated or outdated API responses. Refreshes hourly from GitHub. — Maker: Canton Foundation. Type: official. Last updated: 2026-07-16.
 - [Claude Code Daml Skill](https://github.com/canton-network-devs/CF-Daml-Skill): A Claude Skill that gives any Conversation Updated/Correct level knowledge of the Daml Smart Contracts on Canton Network. — Maker: Canton Foundation. Type: official. Last updated: 2026-07-23.
 - [Noves Canton MCP](https://www.npmjs.com/package/@noves/canton-mcp): Read-only MCP server that lets AI agents query the Noves Canton API for balances, rewards, classified transactions, transfer activity, CC prices, identity data, and the network directory. Runs locally through npx and requires a Noves API key. — Maker: Noves. Type: partner. Last updated: 2026-06-05.
@@ -36,7 +36,7 @@
 ## Getting Started
 
 - [Canton 101](https://canton-101.vercel.app): A community-built overview covering Canton architecture, APIs, SDKs, and core concepts. Good first stop before diving into the official docs. — Maker: Community. Type: partner. Last updated: 2026-07-16.
-- [Canton Hub](https://unityhub.dev/canton): Canton ecosystem resource hub in four sections - Education, Developers, Validator, Community. Covering docs, guides, tools, articles, videos, recorded recaps and more. — Maker: Unity Nodes. Type: partner. Last updated: 2026-07-16.
+- [Canton Hub](https://unityhub.dev/canton): Canton resource hub in four sections - Education, Developers, Validator, Community. Covering docs, guides, tools, articles, videos, recorded recaps and more. — Maker: Unity Nodes. Type: partner. Last updated: 2026-07-16.
 - [Canton Network API Overview](https://docs.canton.network/sdks-tools/): TL;DR overview of all Canton APIs: Ledger API, JSON API, Admin API, Scan API, Validator API, Wallet API. Start here to understand which API you need for what. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
 - [Official Canton Documentation](https://docs.canton.network): The unified new technical docs for Canton Network. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
 
@@ -74,10 +74,9 @@
 ## Wallet Integration
 
 - [Console dApp SDK](https://www.npmjs.com/package/@console-wallet/dapp-sdk): npm package for integrating Console Wallet into your Canton dApp. Lets your frontend connect to users' Console Wallet for signing and submitting transactions. — Maker: PixelPlex. Type: partner. Last updated: 2026-07-16.
-- [Find Canton Wallets](https://www.cantonecosystem.com/): Growing ecosystem of wallets: retail, enterprise, self-custody, and custodial for supporting Canton Network assets and Canton Coin. — Maker: Canton Ecosystem. Type: partner. Last updated: 2026-07-16.
 - [Loop SDK](https://docs.fivenorth.io/): SDK for integrating the Loop Wallet into your Canton dApp frontend. Connects users' Loop Wallet for Canton Coin and asset management. — Maker: 5North. Type: partner. Last updated: 2026-07-16.
 - [WalletConnect](https://docs.walletconnect.network/wallet-sdk/chain-support/canton): WalletConnect integration for Canton Network, connect your dApp to any WalletConnect-compatible wallet that supports Canton. — Maker: WalletConnect. Type: partner. Last updated: 2026-07-16.
 
 ---
 Generated automatically from tools.json. Do not edit by hand.
-Generated: 2026-08-12
+Generated: 2026-08-13
