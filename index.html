@@ -52,7 +52,7 @@
 .devfund-card:last-child { margin-bottom: 0; }
 .devfund-card:hover { border-color: rgba(76,175,80,0.5); background: rgba(76,175,80,0.08); }
 .devfund-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
-.devfund-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 100px; background: rgba(76,175,80,0.15); color: #D5A5E3; border: 1px solid rgba(76,175,80,0.3); white-space: nowrap; flex-shrink: 0; }
+.devfund-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 100px; background: rgba(76,175,80,0.15); color: #2e7d32; border: 1px solid rgba(76,175,80,0.3); white-space: nowrap; flex-shrink: 0; }
 .devfund-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.35; }
 .devfund-date { font-size: 11px; color: var(--hint); margin-top: 2px; }
 .devfund-error { font-size: 12px; color: var(--hint); padding: 8px 0; }
@@ -178,7 +178,7 @@
   .badge.official { background: var(--yellow); color: var(--black); }
   .badge.partner  { background: rgba(213,165,227,0.25); color: #4a2060; }
   .cat-tag { display: inline-block; width: fit-content; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--surface); color: var(--muted); border: 1px solid rgba(3,2,6,0.20); }
-  .badge-devfund { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: rgba(76,175,80,0.12); color: #D5A5E3; border: 1px solid rgba(76,175,80,0.35); white-space: nowrap; }
+  .badge-devfund { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: rgba(76,175,80,0.12); color: #2e7d32; border: 1px solid rgba(76,175,80,0.35); white-space: nowrap; }
   .card-desc { font-size: 12px; font-weight: 400; color: var(--muted); line-height: 1.65; flex: 1; }
   .card-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
   .card-link { font-size: 12px; font-weight: 400; color: var(--purple); display: flex; align-items: center; gap: 3px; transition: opacity 0.12s; }
@@ -324,7 +324,7 @@
   </div>
 </div>
 <div class="section sidebar-section">
-  <div class="whats-new-col-title">Dev Fund Recent Approvals</div>
+  <div class="whats-new-col-title">Dev Fund — Recent Approvals</div>
   <div id="devfund-feed"><div class="devfund-error">Loading…</div></div>
 </div>
 </aside>
@@ -416,8 +416,8 @@ const GISCUS_REPO_ID     = "R_kgDOROGJ0g";
 const GISCUS_CATEGORY    = "Tools";
 const GISCUS_CATEGORY_ID = "DIC_kwDOROGJ0s4C95t0";
 const GISCUS_ORIGIN      = "https://giscus.app";
-const GEMINI_API_KEY = "GEMINI_KEY_PLACEHOLDER";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${GEMINI_API_KEY}`;
+const GEMINI_API_KEY = "AQ.Ab8RN6Iboj7uU8B2qV_RIuuRmznJ-xOW2ngPXxbYUqvL0LYFsg";
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
 const YT_CHANNEL_ID      = "UC5Xt611-4AhcGTmlOaPlIQg";
 const YT_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
   const YT_PROXIES = [
