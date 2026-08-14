@@ -416,8 +416,8 @@ const GISCUS_REPO_ID     = "R_kgDOROGJ0g";
 const GISCUS_CATEGORY    = "Tools";
 const GISCUS_CATEGORY_ID = "DIC_kwDOROGJ0s4C95t0";
 const GISCUS_ORIGIN      = "https://giscus.app";
-const GEMINI_API_KEY = "AQ.Ab8RN6Iboj7uU8B2qV_RIuuRmznJ-xOW2ngPXxbYUqvL0LYFsg";
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
+const GROQ_API_KEY = "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";
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const YT_CHANNEL_ID      = "UC5Xt611-4AhcGTmlOaPlIQg";
 const YT_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
   const YT_PROXIES = [
@@ -593,18 +593,22 @@ function highlightTool(slug, name) {
     }
   },100);
 }
-async function callGemini(prompt) {
-  const res = await fetch(GEMINI_URL, {
+async function callGroq(prompt) {
+  const res = await fetch(GROQ_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${GROQ_API_KEY}`
+    },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 10000 }
+      model: "llama-3.1-8b-instant",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 2048
     })
   });
   const data = await res.json();
   if (data.error) throw new Error(data.error.message);
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  return data.choices?.[0]?.message?.content || '';
 }
 async function runAISuggestion() {
   const input = document.getElementById('ai-input').value.trim();
@@ -616,7 +620,7 @@ async function runAISuggestion() {
   const toolList = TOOLS.map(t=>`- ${t.name} (${t.category}, ${t.type}): ${t.desc.slice(0,100)}`).join('\n');
   const prompt = `You are a Canton Network developer advisor embedded in the Canton Developer Hub. A developer described what they want to build:\n\n"${input}"\n\nBased on the following available tools, recommend the most relevant ones and explain briefly why each is relevant to their specific use case. Be helpful, specific, and concise. Mention 3-6 tools max.\n\nIMPORTANT: Whenever you mention a tool name, wrap it in double square brackets like this: [[Tool Name]]. Use the exact tool name from the list.\n\nAvailable tools:\n${toolList}`;
   try {
-    const text = await callGemini(prompt);
+    const text = await callGroq(prompt);
     const cleaned = text.replace(/\*\*/g,'').replace(/###/g,'').replace(/##/g,'').replace(/#/g,'');
     const rendered = cleaned.replace(/\[\[([^\]]+)\]\]/g, (match, name) => {
       const slug = 'tool-' + name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
