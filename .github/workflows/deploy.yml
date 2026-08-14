@@ -20,9 +20,11 @@ jobs:
           ref: page
           token: ${{ secrets.LLMS_PUSH_TOKEN }}
 
-      - name: Inject Gemini API key
+- name: Inject Gemini API key
+        env:
+          GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          sed -i 's/GEMINI_KEY_PLACEHOLDER/${{ secrets.GEMINI_API_KEY }}/g' index.html
+          sed -i "s/GEMINI_KEY_PLACEHOLDER/${GEMINI_KEY}/g" index.html
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
