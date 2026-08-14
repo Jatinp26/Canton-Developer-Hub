@@ -483,15 +483,15 @@
     "last_updated": "2026-07-16"
   },
   {
-    "name": "Wallet Gateway (dApp SDK)",
+    "name": "dApp SDK",
     "maker": "Canton Network",
     "type": "partner",
-    "category": "APIs",
+    "category": "SDKs",
     "desc": "Open-source SDK for building dApps that integrate with Canton wallets. Includes the dApp API spec (OpenRPC) and a dApp SDK for connecting your frontend to Canton wallet functionality.",
     "links": [
       {
-        "label": "Repo",
-        "url": "https://github.com/canton-network/wallet-gateway/tree/main"
+        "label": "docs",
+        "url": "https://docs.canton.network/sdks-tools/sdks/dapp-sdk/overview"
       }
     ],
     "daml_sdk_version": null,
@@ -614,23 +614,6 @@
     "maintained_by": "Noves",
     "dev_fund": false,
     "last_updated": "2026-07-21"
-  },
-  {
-    "name": "WalletConnect",
-    "maker": "WalletConnect",
-    "type": "partner",
-    "category": "Wallet Integration",
-    "desc": "WalletConnect integration for Canton Network, connect your dApp to any WalletConnect-compatible wallet that supports Canton.",
-    "links": [
-      {
-        "label": "docs",
-        "url": "https://docs.walletconnect.network/wallet-sdk/chain-support/canton"
-      }
-    ],
-    "daml_sdk_version": null,
-    "maintained_by": "WalletConnect",
-    "dev_fund": false,
-    "last_updated": "2026-07-16"
   },
   {
     "name": "Console dApp SDK",
