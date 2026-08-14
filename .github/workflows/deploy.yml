@@ -6,6 +6,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Checkout page branch
         uses: actions/checkout@v4
@@ -17,10 +21,10 @@ jobs:
         run: |
           sed -i 's/GEMINI_KEY_PLACEHOLDER/${{ secrets.GEMINI_API_KEY }}/g' index.html
 
-      - name: Commit and push injected file
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add index.html
-          git commit -m "ci: inject API key [skip ci]" || echo "No changes"
-          git push origin page
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
