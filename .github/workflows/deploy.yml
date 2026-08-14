@@ -1,0 +1,26 @@
+name: Deploy Dev Hub
+on:
+  push:
+    branches: [page]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout page branch
+        uses: actions/checkout@v4
+        with:
+          ref: page
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Inject Gemini API key
+        run: |
+          sed -i 's/GEMINI_KEY_PLACEHOLDER/${{ secrets.GEMINI_API_KEY }}/g' index.html
+
+      - name: Commit and push injected file
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add index.html
+          git commit -m "ci: inject API key [skip ci]" || echo "No changes"
+          git push origin page
