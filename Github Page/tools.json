@@ -127,17 +127,106 @@
     "maker": "OpenZeppelin",
     "type": "partner",
     "category": "Smart Contract Dev",
-    "desc": "A Daml template for building CIP-056 compliant token registries on Canton Network. Clone it, run the setup script, and build your token contract on top.",
+    "desc": "A Daml template for building CIP-056 compliant token registries on Canton Network, with migration evidence toward Token Standard V2 (CIP-0112). Clone it, run the setup script, and build your token contract on top.",
     "links": [
       {
         "label": "Repo",
         "url": "https://github.com/OpenZeppelin/canton-token-template"
       }
     ],
-    "daml_sdk_version": "3.4",
+    "daml_sdk_version": "3.4.10",
     "maintained_by": "OpenZeppelin",
-    "dev_fund": false,
-    "last_updated": "2026-07-16"
+    "dev_fund": true,
+    "last_updated": "2026-07-20"
+  },
+  {
+    "name": "OpenZeppelin Canton Contracts",
+    "maker": "OpenZeppelin",
+    "type": "partner",
+    "category": "Smart Contract Dev",
+    "desc": "Reusable Daml components for Canton, including a Token Standard V2 (CIP-0112) token package with compliance and seizure extension points and an ERC-20 style allowance component per CIP-0086. Ships with Daml Script test suites and a live-sandbox validation gate.",
+    "links": [
+      {
+        "label": "Repo",
+        "url": "https://github.com/OpenZeppelin/canton-contracts"
+      },
+      {
+        "label": "Docs",
+        "url": "https://docs.openzeppelin.com/canton"
+      }
+    ],
+    "daml_sdk_version": "3.4.11",
+    "maintained_by": "OpenZeppelin",
+    "dev_fund": true,
+    "last_updated": "2026-08-14"
+  },
+  {
+    "name": "Canton Stablecoin",
+    "maker": "OpenZeppelin",
+    "type": "partner",
+    "category": "Smart Contract Dev",
+    "desc": "A complete stablecoin implementation in Daml, built on the Canton Token Template, with a single-admin CDP model and fixed-discount liquidation. Use it as a working example of a CIP-056 token application.",
+    "links": [
+      {
+        "label": "Repo",
+        "url": "https://github.com/OpenZeppelin/canton-stablecoin"
+      }
+    ],
+    "daml_sdk_version": "3.4.10",
+    "maintained_by": "OpenZeppelin",
+    "dev_fund": true,
+    "last_updated": "2026-07-20"
+  },
+  {
+    "name": "daml-lint",
+    "maker": "OpenZeppelin",
+    "type": "partner",
+    "category": "Smart Contract Dev",
+    "desc": "Static analysis scanner for Daml smart contracts, similar to Slither for Solidity. Detects security anti-patterns such as unguarded division, missing ensure clauses, archive-before-execute, and CIP-0104 reward-attribution loss, with SARIF, JSON, and markdown output.",
+    "links": [
+      {
+        "label": "Repo",
+        "url": "https://github.com/OpenZeppelin/daml-lint"
+      }
+    ],
+    "daml_sdk_version": "3.4.11",
+    "maintained_by": "OpenZeppelin",
+    "dev_fund": true,
+    "last_updated": "2026-08-11"
+  },
+  {
+    "name": "daml-props",
+    "maker": "OpenZeppelin",
+    "type": "partner",
+    "category": "Smart Contract Dev",
+    "desc": "Property-based testing for Daml contracts. Generates randomized and state-machine test cases in Daml Script to check invariants such as conservation, authority, expiry, and settlement accounting, beyond hand-written examples.",
+    "links": [
+      {
+        "label": "Repo",
+        "url": "https://github.com/OpenZeppelin/daml-props"
+      }
+    ],
+    "daml_sdk_version": "3.4.10",
+    "maintained_by": "OpenZeppelin",
+    "dev_fund": true,
+    "last_updated": "2026-06-07"
+  },
+  {
+    "name": "daml-verify",
+    "maker": "OpenZeppelin",
+    "type": "partner",
+    "category": "Smart Contract Dev",
+    "desc": "Lightweight formal verification for Daml contracts using the Z3 SMT solver. Proves narrow invariants for all possible inputs, with 9 shipped properties across conservation, division safety, and temporal ordering.",
+    "links": [
+      {
+        "label": "Repo",
+        "url": "https://github.com/OpenZeppelin/daml-verify"
+      }
+    ],
+    "daml_sdk_version": "3.4.11",
+    "maintained_by": "OpenZeppelin",
+    "dev_fund": true,
+    "last_updated": "2026-06-07"
   },
   {
     "name": "Canton Security 101",
