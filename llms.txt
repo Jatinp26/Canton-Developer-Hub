@@ -64,12 +64,17 @@
 ## Smart Contract Dev
 
 - [Canton Security 101](https://scauditstudio.com/tools/canton-security101): A Canton-focused cybersecurity guide covering DAML development, web applications, and operational security. Learn about secure dapp development. — Maker: SC Audit Studio. Type: partner. Last updated: 2026-07-16.
-- [Canton Token Template](https://github.com/OpenZeppelin/canton-token-template): A Daml template for building CIP-056 compliant token registries on Canton Network. Clone it, run the setup script, and build your token contract on top. — Maker: OpenZeppelin. Type: partner. Last updated: 2026-07-16.
+- [Canton Stablecoin](https://github.com/OpenZeppelin/canton-stablecoin): A complete stablecoin implementation in Daml, built on the Canton Token Template, with a single-admin CDP model and fixed-discount liquidation. Use it as a working example of a CIP-056 token application. — Maker: OpenZeppelin (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-07-20.
+- [Canton Token Template](https://github.com/OpenZeppelin/canton-token-template): A Daml template for building CIP-056 compliant token registries on Canton Network, with migration evidence toward Token Standard V2 (CIP-0112). Clone it, run the setup script, and build your token contract on top. — Maker: OpenZeppelin (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-07-20.
 - [Catalyx Package Manager](https://apps.catalyx.solutions/marketplace): A community package marketplace for Canton/Daml components. Discover, share, and consume reusable Daml packages across projects. — Maker: IntellectEU. Type: partner. Last updated: 2026-07-16.
 - [DPM: Daml Package Manager](https://github.com/digital-asset/dpm): The primary CLI for Canton/Daml development. Scaffolds projects, builds DARs, runs tests, generates TypeScript and Java bindings, manages SDK versions, and runs a local sandbox. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
 - [Daml Studio (VS Code Extension)](https://marketplace.visualstudio.com/items?itemName=DigitalAssetHoldingsLLC.daml): VS Code extension for Daml syntax highlighting, type checking, inline diagnostics, and code navigation. Installed automatically with DPM. Requires VS Code 1.87+. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
+- [OpenZeppelin Canton Contracts](https://github.com/OpenZeppelin/canton-contracts): Reusable Daml components for Canton, including a Token Standard V2 (CIP-0112) token package with compliance and seizure extension points and an ERC-20 style allowance component per CIP-0086. Ships with Daml Script test suites and a live-sandbox validation gate. — Maker: OpenZeppelin (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-08-14.
 - [Seaport](https://devnet.seaport.to/): Cloud platform for coding, building, deploying, and managing Daml smart contracts, all without local setup. A hosted alternative to the LocalNet toolchain. — Maker: 5North. Type: partner. Last updated: 2026-07-16.
 - [Tokenization Explorer](https://tokenization.catalyst.intellecteu.com/): Visual explorer for Canton tokenization workflows useful for prototyping how tokenised assets flow across Canton participants without building everything from scratch. — Maker: IntellectEU / Catalyx. Type: partner. Last updated: 2026-07-16.
+- [daml-lint](https://github.com/OpenZeppelin/daml-lint): Static analysis scanner for Daml smart contracts, similar to Slither for Solidity. Detects security anti-patterns such as unguarded division, missing ensure clauses, archive-before-execute, and CIP-0104 reward-attribution loss, with SARIF, JSON, and markdown output. — Maker: OpenZeppelin (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-08-11.
+- [daml-props](https://github.com/OpenZeppelin/daml-props): Property-based testing for Daml contracts. Generates randomized and state-machine test cases in Daml Script to check invariants such as conservation, authority, expiry, and settlement accounting, beyond hand-written examples. — Maker: OpenZeppelin (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-06-07.
+- [daml-verify](https://github.com/OpenZeppelin/daml-verify): Lightweight formal verification for Daml contracts using the Z3 SMT solver. Proves narrow invariants for all possible inputs, with 9 shipped properties across conservation, division safety, and temporal ordering. — Maker: OpenZeppelin (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-06-07.
 
 ## Wallet Integration
 
@@ -78,4 +83,4 @@
 
 ---
 Generated automatically from tools.json. Do not edit by hand.
-Generated: 2026-08-14
+Generated: 2026-08-21
