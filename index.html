@@ -3,7 +3,7 @@
 <head>
 <meta name="giscus:backlink" content="https://dev-hub.canton.foundation">
 <meta charset="UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; connect-src 'self' https://api.groq.com https://raw.githubusercontent.com https://api.github.com https://www.youtube.com https://corsproxy.io https://api.allorigins.win https://api.codetabs.com https://giscus.app; img-src 'self' https://i.ytimg.com data:; frame-src https://giscus.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; connect-src 'self' https://api.groq.com https://api.rss2json.com https://raw.githubusercontent.com https://api.github.com https://www.youtube.com https://corsproxy.io https://api.allorigins.win https://api.codetabs.com https://giscus.app; img-src 'self' https://i.ytimg.com data:; frame-src https://giscus.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CF Developer Hub</title>
 <link rel="icon" type="svg" href="https://canton-network-devs.github.io/Canton-Developer-Hub/favicon.svg">
@@ -498,45 +498,27 @@ function updateBadge(slug,count) {
   if(count>0) el.classList.add('visible');
 }
 async function fetchYouTube() {
+  const feed = document.getElementById('youtube-feed');
   try {
-    let xml = null;
-    for (const proxyUrl of YT_PROXIES) {
-      try {
-        const res = await fetch(proxyUrl);
-        if (!res.ok) continue;
-        const text = await res.text();
-        let xmlText = text;
-        try { xmlText = JSON.parse(text).contents || text; } catch(e) {}
-        const parser = new DOMParser();
-        const parsed = parser.parseFromString(xmlText, 'text/xml');
-        if (parsed.querySelector('entry')) { xml = parsed; break; }
-      } catch(e) { continue; }
-    }
-    if (!xml) throw new Error('All proxies failed');
-    const entries = [...xml.querySelectorAll('entry')].slice(0, 2);
-    const feed = document.getElementById('youtube-feed');
-    if(!entries.length) { feed.innerHTML='<div style="font-size:12px;color:var(--hint);">No videos found.</div>'; return; }
-    feed.innerHTML = entries.map(e => {
-      const title   = e.querySelector('title')?.textContent || '';
-      const link    = e.querySelector('link')?.getAttribute('href') || '#';
-      const videoId = e.querySelector('videoId')?.textContent || link.split('v=')[1] || '';
-      const pubDate = e.querySelector('published')?.textContent || '';
-      const dateStr = pubDate ? new Date(pubDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
-      const thumb   = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '';
-      return `<a class="video-card" href="${link}" target="_blank" rel="noopener" style="margin-bottom:8px;display:flex;">
-        ${thumb
-          ? `<img class="video-thumb" src="${thumb}" alt="${title}" loading="lazy" onerror="this.style.display='none'">`
-          : `<div class="video-thumb-placeholder"><svg viewBox="0 0 24 24" fill="var(--muted)"><path d="M8 5v14l11-7z"/></svg></div>`
-        }
+    const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(YT_FEED_URL)}`);
+    if (!res.ok) throw new Error('Failed');
+    const data = await res.json();
+    if (!data.items || !data.items.length) throw new Error('No items');
+    feed.innerHTML = data.items.slice(0, 2).map(item => {
+      const videoId = item.link.split('v=')[1] || '';
+      const thumb = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '';
+      const dateStr = new Date(item.pubDate).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
+      return `<a class="video-card" href="${item.link}" target="_blank" rel="noopener" style="margin-bottom:8px;display:flex;">
+        ${thumb ? `<img class="video-thumb" src="${thumb}" alt="${item.title}" loading="lazy" onerror="this.style.display='none'">` : `<div class="video-thumb-placeholder"><svg viewBox="0 0 24 24" fill="var(--muted)"><path d="M8 5v14l11-7z"/></svg></div>`}
         <div class="video-info">
           <div class="video-badge">YouTube</div>
-          <div class="video-title">${title}</div>
+          <div class="video-title">${item.title}</div>
           <div class="video-date">${dateStr}</div>
         </div>
       </a>`;
     }).join('');
   } catch(e) {
-    document.getElementById('youtube-feed').innerHTML='<div style="font-size:12px;color:var(--hint);">Could not load videos.</div>';
+    feed.innerHTML = '<div style="font-size:12px;color:var(--hint);">Could not load videos.</div>';
   }
 }
 function renderNewTools() {
