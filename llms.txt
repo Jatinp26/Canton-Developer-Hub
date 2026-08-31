@@ -80,7 +80,8 @@
 
 - [Console dApp SDK](https://www.npmjs.com/package/@console-wallet/dapp-sdk): npm package for integrating Console Wallet into your Canton dApp. Lets your frontend connect to users' Console Wallet for signing and submitting transactions. — Maker: PixelPlex. Type: partner. Last updated: 2026-07-16.
 - [Loop SDK](https://docs.fivenorth.io/): SDK for integrating the Loop Wallet into your Canton dApp frontend. Connects users' Loop Wallet for Canton Coin and asset management. — Maker: 5North. Type: partner. Last updated: 2026-07-16.
+- [PartyLayer](https://partylayer.xyz/docs/introduction): CIP-0103 wallet connection layer for Canton dApps, with React, Vue and React Native packages, hooks for the CIP-0056 token standard, and a signed wallet registry. Any CIP-0103 wallet is discovered at runtime, so no wallet-specific code ships in the dApp. — Maker: Cayvox Labs (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-08-19.
 
 ---
 Generated automatically from tools.json. Do not edit by hand.
-Generated: 2026-08-21
+Generated: 2026-08-31
