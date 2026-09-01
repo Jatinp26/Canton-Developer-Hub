@@ -35,6 +35,7 @@
 ## Getting Started
 
 - [Canton 101](https://canton-101.vercel.app): A community-built overview covering Canton architecture, APIs, SDKs, and core concepts. Good first stop before diving into the official docs. — Maker: Community. Type: partner. Last updated: 2026-07-16.
+- [Canton Builder Tool & LocalNet Guide](https://guide.canton.foundation/localnet): Get your Project running on Canton LocalNet in few commands via Builder Tool, Learn more about LocalNet and Sample Quickstart app setup via LocalNet Guide. — Maker: Canton Foundation DevRel. Type: official. Last updated: 2026-09-01.
 - [Canton Hub](https://unityhub.dev/canton): Canton resource hub in four sections - Education, Developers, Validator, Community. Covering docs, guides, tools, articles, videos, recorded recaps and more. — Maker: Unity Nodes. Type: partner. Last updated: 2026-07-16.
 - [Canton Network API Overview](https://docs.canton.network/sdks-tools/): TL;DR overview of all Canton APIs: Ledger API, JSON API, Admin API, Scan API, Validator API, Wallet API. Start here to understand which API you need for what. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
 - [Official Canton Documentation](https://docs.canton.network): The unified new technical docs for Canton Network. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
@@ -84,4 +85,4 @@
 
 ---
 Generated automatically from tools.json. Do not edit by hand.
-Generated: 2026-08-31
+Generated: 2026-09-01
