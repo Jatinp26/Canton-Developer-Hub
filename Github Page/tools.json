@@ -68,6 +68,23 @@
     "last_updated": "2026-07-16"
   },
   {
+    "name": "Canton Builder Tool & LocalNet Guide",
+    "maker": "Canton Foundation DevRel",
+    "type": "official",
+    "category": "Getting Started",
+    "desc": "Get your Project running on Canton LocalNet in few commands via Builder Tool, Learn more about LocalNet and Sample Quickstart app setup via LocalNet Guide.",
+    "links": [
+      {
+        "label": "Guide",
+        "url": "https://guide.canton.foundation/localnet"
+      }
+    ],
+    "daml_sdk_version": null,
+    "maintained_by": "Canton Foundation DevRel",
+    "dev_fund": false,
+    "last_updated": "2026-09-01"
+  },
+  {
     "name": "DPM: Daml Package Manager",
     "maker": "Canton Network",
     "type": "official",
