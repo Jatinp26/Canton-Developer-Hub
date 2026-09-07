@@ -417,8 +417,7 @@ const GISCUS_REPO_ID     = "R_kgDOROGJ0g";
 const GISCUS_CATEGORY    = "Tools";
 const GISCUS_CATEGORY_ID = "DIC_kwDOROGJ0s4C95t0";
 const GISCUS_ORIGIN      = "https://giscus.app";
-const GROQ_API_KEY = "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";
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const AI_PROXY_URL = "/api/suggest";
 const YT_CHANNEL_ID      = "UC5Xt611-4AhcGTmlOaPlIQg";
 const YT_FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
   const YT_PROXIES = [
@@ -577,21 +576,14 @@ function highlightTool(slug, name) {
   },100);
 }
 async function callGroq(prompt) {
-  const res = await fetch(GROQ_URL, {
+  const res = await fetch(AI_PROXY_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${GROQ_API_KEY}`
-    },
-    body: JSON.stringify({
-      model: "openai/gpt-oss-20b",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 2048
-    })
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt })
   });
   const data = await res.json();
-  if (data.error) throw new Error(data.error.message);
-  return data.choices?.[0]?.message?.content || '';
+  if (!res.ok || data.error) throw new Error(data.error || `Request failed (${res.status})`);
+  return data.content || '';
 }
 async function runAISuggestion() {
   const input = document.getElementById('ai-input').value.trim();
@@ -783,5 +775,9 @@ async function init() {
 }
 init();
 </script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
