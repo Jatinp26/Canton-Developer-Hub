@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
       body: JSON.stringify({
         model: "openai/gpt-oss-20b",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 2048
+        max_tokens: 20480
       })
     });
     const data = await groqRes.json();
