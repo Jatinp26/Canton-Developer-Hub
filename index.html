@@ -462,10 +462,6 @@ button { cursor: pointer; font-family: inherit; }
     <div id="cip-announce-feed">
       <div class="feed-loading">Loading…</div>
     </div>
-    <div class="sidebar-label">CIP Discussions</div>
-    <div id="cip-discuss-feed">
-      <div class="feed-loading">Loading…</div>
-    </div>
     <div class="sidebar-label">Dev Fund</div>
     <div id="devfund-feed"><div class="devfund-error">Loading…</div></div>
     <div class="sidebar-label">New Tools</div>
@@ -645,21 +641,6 @@ async function fetchCIPAnnounce() {
     }).join('');
   } catch(e) {
     feed.innerHTML = '<div class="feed-loading">Could not load CIPs.</div>';
-  }
-}
-async function fetchCIPDiscuss() {
-  const feed = $('cip-discuss-feed');
-  if (!feed) return;
-  try {
-    const items = await loadCIPList('discuss', 2);
-    feed.innerHTML = items.map(item => `<a class="glass-card-link" href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer">
-        <div class="glass-card discuss-card">
-          <div class="discuss-title">${escapeHTML(item.title)}</div>
-          <div class="discuss-meta">${fmtDate(item.date, {month:'short', day:'numeric'})}</div>
-        </div>
-      </a>`).join('');
-  } catch(e) {
-    feed.innerHTML = '<div class="feed-loading">Could not load discussions.</div>';
   }
 }
 async function fetchDevFundApprovals() {
