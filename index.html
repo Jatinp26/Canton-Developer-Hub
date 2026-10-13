@@ -447,7 +447,7 @@ button { cursor: pointer; font-family: inherit; }
 
 <div class="app-shell">
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-label">Latest CIPs</div>
+    <div class="sidebar-label">Latest CIP</div>
     <div id="cip-announce-feed"><div class="feed-loading">Loading…</div></div>
     <div class="sidebar-label">Dev Fund</div>
     <div id="devfund-feed"><div class="devfund-error">Loading…</div></div>
@@ -615,7 +615,7 @@ async function fetchCIPAnnounce() {
   const feed = $('cip-announce-feed');
   if (!feed) return;
   try {
-    const items = await loadCIPList('announce', 3);
+    const items = await loadCIPList('announce', 1);
     feed.innerHTML = items.map(item => {
       const title = item.title || '';
       const cipMatch = title.match(/CIP[-\s]?(\d+)/i);
