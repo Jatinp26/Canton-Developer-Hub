@@ -559,8 +559,7 @@ const GISCUS_CATEGORY    = "Tools";
 const GISCUS_CATEGORY_ID = "DIC_kwDOROGJ0s4C95t0";
 const GISCUS_ORIGIN      = "https://giscus.app";
 const AI_PROXY_URL       = "/api/suggest";
-const YT_CHANNEL_ID      = "UC5Xt611-4AhcGTmlOaPlIQg";
-const YT_FEED_URL        = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
+
 let TOOLS = [];
 let currentSlug = null, REACTION_COUNTS = {};
 let compareSelected = [];
@@ -682,17 +681,15 @@ async function fetchYouTube() {
   const feed = $('youtube-feed');
   if (!feed) return;
   try {
-    const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(YT_FEED_URL)}`);
-    if (!res.ok) throw new Error('Failed');
+    const res = await fetch('/api/youtube?limit=2');
     const data = await res.json();
-    if (!data.items || !data.items.length) throw new Error('No items');
-    feed.innerHTML = data.items.slice(0, 2).map(item => {
-      const videoId = item.link.split('v=')[1] || '';
-      const thumb = videoId ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg` : '';
-      const dateStr = new Date(item.pubDate).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'});
-      const title = escapeHTML(item.title);
-      return `<a class="video-card" href="${item.link}" target="_blank" rel="noopener">
-        ${thumb ? `<img class="video-thumb" src="${thumb}" alt="${title}" loading="lazy" onerror="this.style.display='none'">` : `<div class="video-thumb-placeholder"><svg viewBox="0 0 24 24" fill="var(--muted)"><path d="M8 5v14l11-7z"/></svg></div>`}
+    if (!res.ok || !data.items || !data.items.length) throw new Error(data.error || 'No items');
+    feed.innerHTML = data.items.map(v => {
+      const thumb = `https://i.ytimg.com/vi/${encodeURIComponent(v.id)}/mqdefault.jpg`;
+      const title = escapeHTML(v.title);
+      const dateStr = v.date ? new Date(v.date).toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) : '';
+      return `<a class="video-card" href="${escapeHTML(v.link)}" target="_blank" rel="noopener">
+        <img class="video-thumb" src="${thumb}" alt="" loading="lazy" onerror="this.style.display='none'">
         <div class="video-info">
           <div class="video-badge">YouTube</div>
           <div class="video-title">${title}</div>
