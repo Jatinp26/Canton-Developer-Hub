@@ -1,6 +1,5 @@
 const ORIGIN = "https://lists.sync.global";
 const GROUPS = { announce: "cip-announce", discuss: "cip-discuss" };
-
 export default async function handler(req, res) {
   const group = GROUPS[req.query.list];
   if (!group) return res.status(400).json({ error: "list must be 'announce' or 'discuss'" });
