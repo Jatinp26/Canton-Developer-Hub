@@ -60,6 +60,7 @@
 - [Daml SDK](https://docs.canton.network/sdks-tools/sdks/daml-sdk): The core development kit for building on Canton. Bundles the Daml compiler, Daml Script runner, Canton Sandbox, and supporting tools. Installed and managed through dpm. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
 - [Givre](https://github.com/LFDT-Lockness/givre): Rust implementation of threshold Schnorr / EdDSA signing, the signature scheme used by Canton Network. Supports distributed key generation and threshold signing with presignatures for t-of-n keys for wallet infrastructure and validator key custody. — Maker: Dfns & LFDT Lockness. Type: partner. Last updated: 2026-07-16.
 - [Go SDK for Daml Ledger](https://github.com/noders-team/go-daml): Comprehensive Go SDK for Canton/Daml ledgers including Ledger API client, service abstractions, type-safe code generator from .dar files, and a separate Splice Amulet wallet SDK. — Maker: Noders. Type: partner. Last updated: 2026-07-16.
+- [Sigilry](https://sigilry.org): A community TypeScript SDK for Canton dApp-wallet connectivity through the CIP-0103 provider API. @sigilry/dapp provides typed JSON-RPC clients and servers, transports, and OpenRPC-derived runtime schemas; @sigilry/react adds React Query hooks. — Maker: Send. Type: partner. Last updated: 2026-10-05.
 - [Wallet SDK](https://docs.canton.network/sdks-tools/sdks/wallet-sdk): TypeScript library for programmatic wallet operations on Canton i.e party management, token transfers, UTXO queries, transaction signing, and third-party dApp integration. — Maker: Canton Network. Type: official. Last updated: 2026-07-16.
 - [canton-deploy](https://docs.lync.world/docs/CANTON/deploy/canton-deploy): Deploy Daml packages to a Canton validator from your project: build, upload, vet, allocate parties, onboard users, run scripts, and inspect what is on the ledger. — Maker: LYNC (Canton Foundation Dev Fund). Type: partner. Last updated: 2026-09-18.
 - [dApp SDK](https://docs.canton.network/sdks-tools/sdks/dapp-sdk/overview): Open-source SDK for building dApps that integrate with Canton wallets. Includes the dApp API spec (OpenRPC) and a dApp SDK for connecting your frontend to Canton wallet functionality. — Maker: Canton Network. Type: partner. Last updated: 2026-07-16.
@@ -91,4 +92,4 @@
 
 ---
 Generated automatically from tools.json. Do not edit by hand.
-Generated: 2026-09-24
+Generated: 2026-10-14
