@@ -3,7 +3,7 @@
 <head>
 <meta name="giscus:backlink" content="https://dev-hub.canton.foundation">
 <meta charset="UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app https://cdn.vercel-insights.com; connect-src 'self' https://api.groq.com https://api.rss2json.com https://raw.githubusercontent.com https://api.github.com https://lists.sync.global https://giscus.app https://vitals.vercel-insights.com; img-src 'self' https://i.ytimg.com data:; frame-src https://giscus.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; connect-src 'self' https://api.groq.com https://api.rss2json.com https://raw.githubusercontent.com https://api.github.com https://lists.sync.global https://giscus.app; img-src 'self' https://i.ytimg.com data:; frame-src https://giscus.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Canton Developer Hub</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -254,6 +254,14 @@ button { cursor: pointer; font-family: inherit; }
   position: relative; z-index: 1;
 }
 .ai-response.visible { display: block; }
+.ai-actions { display: none; align-items: center; gap: 8px; margin-top: 10px; position: relative; z-index: 1; font-size: 12px; color: rgba(255,255,252,0.45); flex-wrap: wrap; }
+.ai-actions.visible { display: flex; }
+.ai-action-btn { background: rgba(255,255,252,0.04); border: 1px solid rgba(255,255,252,0.12); color: rgba(255,255,252,0.7); border-radius: 100px; padding: 4px 11px; font-size: 12px; transition: all 0.13s; }
+.ai-action-btn:hover:not(:disabled) { border-color: rgba(255,255,252,0.3); color: var(--white); }
+.ai-action-btn:disabled { cursor: default; }
+.ai-action-btn.chosen { border-color: var(--purple); background: rgba(135,92,255,0.2); color: var(--white); }
+.ai-actions .sep { flex: 1; }
+.ai-thanks { color: rgba(255,255,252,0.55); }
 .ai-cip-context {
   display: none; align-items: center; gap: 6px;
   margin-bottom: 10px;
@@ -423,7 +431,9 @@ button { cursor: pointer; font-family: inherit; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
 @media (max-width: 960px) { .tools-sheet { margin: 0 -1rem; padding: 0 1rem 2rem; } .tool-count { margin-left: 0; } }
 </style>
-<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
 </head>
 <body>
 <div class="disclaimer-bar" id="disclaimer-bar">
@@ -488,6 +498,13 @@ button { cursor: pointer; font-family: inherit; }
           <span id="ai-cip-context-text"></span>
         </div>
         <div class="ai-response" id="ai-response"></div>
+        <div class="ai-actions" id="ai-actions">
+          <span id="ai-rate-label">Was this helpful?</span>
+          <button type="button" class="ai-action-btn" data-rate="up" aria-label="Helpful answer">👍</button>
+          <button type="button" class="ai-action-btn" data-rate="down" aria-label="Unhelpful answer">👎</button>
+          <span class="sep"></span>
+          <button type="button" class="ai-action-btn" id="ai-copy">Copy answer</button>
+        </div>
       </div>
 
       <a class="browse-link" href="#tools">Or browse all <strong id="tool-total">the</strong> tools yourself
@@ -577,6 +594,74 @@ function setHTML(id, html) {
 function escapeHTML(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+
+/* ── ANALYTICS (Vercel Web Analytics custom events — recorded on Pro/Enterprise only) ──
+   Max 2 data properties per event, values trimmed to 100 chars. Never send prompt text. */
+function track(name, data) {
+  try {
+    if (typeof window.va !== 'function') return;
+    const clean = {};
+    Object.entries(data || {}).slice(0, 2).forEach(([k, v]) => { clean[k] = typeof v === 'string' ? v.slice(0, 100) : v; });
+    window.va('event', Object.keys(clean).length ? { name, data: clean } : { name });
+  } catch (e) {}
+}
+let promptSource = 'typed';
+const PAGE_LOADED = Date.now();
+
+/* Seconds → readable bucket, so the dashboard groups values instead of listing every number */
+function timeBucket(ms) {
+  const s = ms / 1000;
+  return s < 10 ? '<10s' : s < 30 ? '10-30s' : s < 60 ? '30-60s' : s < 180 ? '1-3m' : '3m+';
+}
+
+/* First meaningful action on the page (logged once) */
+const FIRST_ACTION_EVENTS = new Set(['AI Question','Quick Prompt','Tool Search','Tool Filter','Tool Link','Helpful Click','Compare Opened','Feed Click','Browse Tools Click','AI Tool Chip','Header Click']);
+let firstActionDone = false;
+const _track = track;
+track = function (name, data) {
+  _track(name, data);
+  if (!firstActionDone && FIRST_ACTION_EVENTS.has(name)) {
+    firstActionDone = true;
+    _track('First Action', { action: name, after: timeBucket(Date.now() - PAGE_LOADED) });
+  }
+};
+
+/* ── AI QUESTION TOPICS ──
+   Classifies questions in the browser and sends only fixed keywords — never the text people typed. */
+const TOPIC_KEYWORDS = {
+  'Dev Fund':           /\b(dev ?fund|grants?|funding|milestones?|proposals?)\b/i,
+  'SDKs':               /\b(sdks?|librar(y|ies)|npm|packages?)\b/i,
+  'APIs':               /\b(apis?|endpoints?|json api|ledger api|grpc|rest|scan api)\b/i,
+  'AI Tools':           /\b(ai|mcp|claude|llms?|agents?|agentic|skills?|cursor|copilot)\b/i,
+  'Wallet Integration': /\b(wallets?|walletconnect|signing|signer|custody)\b/i,
+  'Local Dev':          /\b(local ?net|local|docker|quickstart|setup|set up|environment|devnet)\b/i,
+  'Smart Contract Dev': /\b(daml|smart contracts?|templates?|choices?|dars?|dpm)\b/i,
+  'Data & Indexing':    /\b(pqs|index(ing|er)?|query|queries|explorer|analytics)\b/i,
+  'Identity':           /\b(identity|kyc|credentials?|dids?)\b/i,
+  'Getting Started':    /\b(start(ed|ing)?|beginner|learn|tutorial|new to|intro(duction)?)\b/i,
+  'Tokens':             /\b(tokens?|token standard|stablecoins?|canton coin|cc|dvp|settlement)\b/i,
+  'Use case: DeFi':     /\b(dex|swaps?|amm|lending|defi|liquidity|trading)\b/i,
+};
+function classifyQuestion(text, cipNums) {
+  const matches = Object.entries(TOPIC_KEYWORDS).filter(([, re]) => re.test(text)).map(([k]) => k);
+  let topic = 'General';
+  if (cipNums && cipNums.length) topic = 'CIP';
+  else if (matches.includes('Dev Fund')) topic = 'Dev Fund';
+  else if (matches.length) topic = 'Tool category';
+  const cips = (cipNums || []).map(c => 'CIP-' + c.replace(/\D/g, '').padStart(4, '0'));
+  const keywords = [...cips, ...matches.filter(m => !(topic === 'Dev Fund' && m === 'Dev Fund'))];
+  return { topic, keywords: keywords.length ? keywords.join(', ') : 'none' };
+}
+
+/* State of the latest AI answer, for "did they use it" signals */
+let lastAnswer = null;
+function markAnswerUsed(via) {
+  if (!lastAnswer || lastAnswer.used) return;
+  const elapsed = Date.now() - lastAnswer.shownAt;
+  if (elapsed > 60000) return;
+  lastAnswer.used = true;
+  track('AI Answer Used', { via, after: timeBucket(elapsed) });
+}
 (function() {
   const bar = $('disclaimer-bar');
   const hdr = $('site-header');
@@ -589,11 +674,13 @@ function escapeHTML(s) {
   }
   function sync() { setTop(bar.style.display === 'none' ? 0 : bar.offsetHeight); }
   sync(); window.addEventListener('resize', sync);
-  on('disclaimer-close', 'click', () => { bar.style.display = 'none'; setTop(0); });
+  on('disclaimer-close', 'click', () => { track('Disclaimer Dismissed', { after: timeBucket(Date.now() - PAGE_LOADED) }); bar.style.display = 'none'; setTop(0); });
 })();
 function slugify(n) { return 'tool-' + n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
 function formatDate(s) { if(!s) return null; const d=new Date(s); return isNaN(d)?null:d.toLocaleDateString('en-US',{month:'short',year:'numeric'}); }
 function fillPrompt(text) {
+  promptSource = 'quick prompt';
+  track('Quick Prompt', { prompt: text });
   const input = $('ai-input');
   if (!input) return;
   input.value = text;
@@ -634,6 +721,7 @@ async function fetchCIPAnnounce() {
       </a>`;
     }).join('');
   } catch(e) {
+    track('Load Error', { source: 'cip feed', reason: e.message });
     feed.innerHTML = '<div class="feed-loading">Could not load CIPs.</div>';
   }
 }
@@ -659,6 +747,7 @@ async function fetchDevFundApprovals() {
       </a>`;
     }).join('');
   } catch(e) {
+    track('Load Error', { source: 'dev fund feed', reason: e.message });
     feed.innerHTML = '<div class="devfund-error">Could not load approvals.</div>';
   }
 }
@@ -698,6 +787,7 @@ async function fetchYouTube() {
       </a>`;
     }).join('');
   } catch(e) {
+    track('Load Error', { source: 'youtube feed', reason: e.message });
     feed.innerHTML = '<div class="feed-loading">Could not load videos.</div>';
   }
 }
@@ -777,13 +867,18 @@ async function runAISuggestion() {
   response.classList.remove('visible');
   response.textContent = '';
   ctxBox.classList.remove('visible');
+  resetAnswerActions();
   const cipNums = detectCIP(input);
   let cipContext = null;
+  const { topic, keywords } = classifyQuestion(input, cipNums);
+  track('AI Question', { topic, keywords });
+  promptSource = 'typed';
   if (cipNums && cipNums.length) {
     ctxText.textContent = `Loading CIP context: ${cipNums.join(', ')}…`;
     ctxBox.classList.add('visible');
     cipContext = await fetchCIPContext(cipNums);
     const found = cipContext.filter(c => c.found);
+    cipContext.filter(c => !c.found).forEach(c => track('CIP Not Found', { cip: c.cip }));
     ctxText.textContent = found.length
       ? `Context loaded: ${found.map(c => `${c.cip} (${c.status || 'status unknown'}, ${c.mentions?.length || 0} list mentions)`).join(', ')} + tool catalogue`
       : `Couldn't find ${cipNums.join(', ')} in the CIP repo, answering from tool catalogue`;
@@ -821,9 +916,12 @@ ${toolList}`;
     });
     response.innerHTML = rendered;
     response.classList.add('visible');
+    lastAnswer = { topic, shownAt: Date.now(), used: false, rated: false };
+    $('ai-actions')?.classList.add('visible');
   } catch(e) {
     response.textContent = 'Could not connect to AI. Please try again.';
     response.classList.add('visible');
+    track('Load Error', { source: 'ai answer', reason: e.message });
   }
   thinking.classList.remove('visible');
   submit.disabled = false;
@@ -834,7 +932,40 @@ on('ai-response', 'click', e => {
   const tmp = document.createElement('textarea');
   tmp.innerHTML = chip.dataset.toolName; 
   const name = tmp.value;
+  track('AI Tool Chip', { tool: name });
+  markAnswerUsed('tool chip');
   handleToolChip(slugify(name), name);
+});
+
+/* 👍 / 👎 and Copy answer */
+function resetAnswerActions() {
+  const bar = $('ai-actions'); if (!bar) return;
+  bar.classList.remove('visible');
+  bar.querySelectorAll('[data-rate]').forEach(b => { b.disabled = false; b.classList.remove('chosen'); });
+  const label = $('ai-rate-label'); if (label) { label.textContent = 'Was this helpful?'; label.classList.remove('ai-thanks'); }
+  const copy = $('ai-copy'); if (copy) copy.textContent = 'Copy answer';
+}
+on('ai-actions', 'click', async e => {
+  const rate = e.target.closest('[data-rate]');
+  if (rate && lastAnswer && !lastAnswer.rated) {
+    lastAnswer.rated = true;
+    track('AI Feedback', { rating: rate.dataset.rate === 'up' ? 'helpful' : 'not helpful', topic: lastAnswer.topic });
+    document.querySelectorAll('#ai-actions [data-rate]').forEach(b => { b.disabled = true; b.classList.toggle('chosen', b === rate); });
+    const label = $('ai-rate-label'); if (label) { label.textContent = 'Thanks for the feedback'; label.classList.add('ai-thanks'); }
+    return;
+  }
+  if (e.target.closest('#ai-copy')) {
+    const btn = $('ai-copy');
+    try {
+      await navigator.clipboard.writeText($('ai-response').innerText.trim());
+      btn.textContent = 'Copied';
+      track('AI Answer Copied', { topic: lastAnswer?.topic || 'unknown' });
+      markAnswerUsed('copy');
+    } catch (err) {
+      btn.textContent = 'Copy failed — select the text instead';
+    }
+    setTimeout(() => { btn.textContent = 'Copy answer'; }, 2000);
+  }
 });
 
 function handleToolChip(slug, name) {
@@ -868,6 +999,7 @@ function updateCompareBar() {
 }
 function clearCompare() { compareSelected=[]; updateCompareBar(); closeComparePanel(); renderTools(); }
 function openComparePanel() {
+  track('Compare Opened', { tools: compareSelected.length });
   const tools = compareSelected.map(slug=>TOOLS.find(t=>slugify(t.name)===slug)).filter(Boolean);
   const fields = [
     ['Type', t=>t.type==='official'?'Official':'Partner'],
@@ -946,22 +1078,31 @@ function resetFilters(query = '') {
   document.querySelectorAll('[data-cat]').forEach(p => p.classList.toggle('active', p.dataset.cat === 'all'));
   renderTools();
 }
-on('tool-search', 'input', e => { searchQ = e.target.value; renderTools(); });
+let searchTrackTimer;
+on('tool-search', 'input', e => {
+  searchQ = e.target.value; renderTools();
+  // Log what people search for once they pause typing (1.5s), ignoring 1–2 char fragments
+  clearTimeout(searchTrackTimer);
+  const q = searchQ.trim();
+  if (q.length >= 3) searchTrackTimer = setTimeout(() => track('Tool Search', { query: q.toLowerCase(), results: filteredTools().length }), 1500);
+});
 on('type-pills', 'click', e => {
   const p = e.target.closest('[data-type]'); if (!p) return;
   activeType = p.dataset.type;
+  track('Tool Filter', { kind: 'type', value: activeType });
   document.querySelectorAll('[data-type]').forEach(x => x.classList.toggle('active', x === p));
   renderTools();
 });
 on('cat-pills', 'click', e => {
   const p = e.target.closest('[data-cat]'); if (!p) return;
   activeCat = p.dataset.cat;
+  track('Tool Filter', { kind: 'category', value: activeCat });
   document.querySelectorAll('[data-cat]').forEach(x => x.classList.toggle('active', x === p));
   renderTools();
 });
 on('tool-grid', 'click', e => {
   const vote = e.target.closest('.vote-btn');
-  if (vote) { vote.classList.add('active'); openPanel(vote.dataset.name, vote.dataset.slug); }
+  if (vote) { track('Helpful Click', { tool: vote.dataset.name }); vote.classList.add('active'); openPanel(vote.dataset.name, vote.dataset.slug); }
 });
 on('tool-grid', 'change', e => {
   if (e.target.matches('.compare-check')) toggleCompare(e.target.dataset.slug, e.target.checked);
@@ -996,6 +1137,40 @@ window.addEventListener('message', e => {
   if (msg.resizeHeight) { const l=panelBody.querySelector('.panel-loading'); if(l)l.style.display='none'; const i=panelBody.querySelector('iframe'); if(i)i.style.height=msg.resizeHeight+'px'; }
   if (msg.discussion && currentSlug) { const t=typeof msg.discussion.reactionCount==='number'?msg.discussion.reactionCount:Object.values(msg.discussion.reactions||{}).filter(v=>typeof v==='number').reduce((s,n)=>s+n,0); REACTION_COUNTS[currentSlug]=t; updateBadge(currentSlug,t); }
 });
+/* ── CLICK TRACKING (links) ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('a'); if (!a) return;
+  const card = a.closest('.card');
+  if (card && a.classList.contains('card-link')) {
+    markAnswerUsed('tool link');
+    return track('Tool Link', { tool: card.querySelector('.card-name')?.textContent || '', link: a.textContent.trim() });
+  }
+  if (a.classList.contains('browse-link')) return track('Browse Tools Click');
+  if (a.closest('#cip-announce-feed')) return track('Feed Click', { feed: 'cip', title: a.querySelector('.cip-title')?.textContent || '' });
+  if (a.closest('#devfund-feed'))      return track('Feed Click', { feed: 'dev fund', title: a.querySelector('.devfund-name')?.textContent || '' });
+  if (a.closest('#youtube-feed'))      return track('Feed Click', { feed: 'youtube', title: a.querySelector('.video-title')?.textContent || '' });
+  if (a.classList.contains('header-btn')) return track('Header Click', { button: a.textContent.trim() });
+});
+
+/* Did they ever scroll far enough to see tool cards? (fires once) */
+let directoryVia = 'scroll';
+document.addEventListener('click', e => {
+  if (e.target.closest('.browse-link')) directoryVia = 'browse link';
+  else if (e.target.closest('.ai-tool-chip')) directoryVia = 'ai tool chip';
+}, true);
+function watchDirectory() {
+  // "Reached" = first row of tool cards fully on screen above the bottom 25% of the viewport
+  const firstCard = document.querySelector('#tool-grid .card');
+  if (!firstCard || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(entries => {
+    if (entries.some(en => en.isIntersecting && en.intersectionRatio >= 0.95)) {
+      track('Directory Reached', { via: directoryVia, after: timeBucket(Date.now() - PAGE_LOADED) });
+      io.disconnect();
+    }
+  }, { threshold: [0.95], rootMargin: '0px 0px -25% 0px' });
+  io.observe(firstCard);
+}
+
 function loadFeeds() {
   [fetchCIPAnnounce, fetchDevFundApprovals, fetchYouTube].forEach(fn => {
     try { fn(); } catch (e) { console.error(`[devhub] ${fn.name} failed:`, e); }
@@ -1015,15 +1190,13 @@ async function loadTools() {
     fetchAllReactionCounts();
   } catch (err) {
     console.error("[devhub] tools.json failed:", err);
+    track('Load Error', { source: 'tools.json', reason: err.message });
     setHTML("tool-grid", `<div class="tool-empty">Could not load the tool list (${escapeHTML(err.message)}). Refresh to try again.</div>`);
     setHTML("new-tools-feed", '<div class="feed-loading">Could not load tools.</div>');
   }
 }
-function init() { loadFeeds(); loadTools(); }
+function init() { loadFeeds(); loadTools().then(watchDirectory); }
 document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
-</script>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
