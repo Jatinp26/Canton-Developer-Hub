@@ -3,7 +3,7 @@
 <head>
 <meta name="giscus:backlink" content="https://dev-hub.canton.foundation">
 <meta charset="UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; connect-src 'self' https://api.groq.com https://api.rss2json.com https://raw.githubusercontent.com https://api.github.com https://lists.sync.global https://giscus.app; img-src 'self' https://i.ytimg.com data:; frame-src https://giscus.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://giscus.app; connect-src 'self' https://api.groq.com https://api.rss2json.com https://raw.githubusercontent.com https://api.github.com https://lists.sync.global https://giscus.app; img-src 'self' https://i.ytimg.com data:; frame-src https://giscus.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; https://cdn.vercel-insights.com; https://vitals.vercel-insights.com; font-src https://fonts.gstatic.com;">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Canton Developer Hub</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -35,7 +35,6 @@ html { font-size: 16px; scroll-behavior: smooth; }
 body { font-family: 'IBM Plex Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; font-family: inherit; }
-
 .disclaimer-bar { background: #030206; border-bottom: 1px solid rgba(135,92,255,0.4); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 200; }
 .disclaimer-bar-inner { display: flex; align-items: flex-start; gap: 8px; flex: 1; padding: 8px 0; }
 .disclaimer-bar-icon { flex-shrink: 0; width: 14px; height: 14px; margin-top: 2px; opacity: 0.5; }
@@ -454,7 +453,6 @@ button { cursor: pointer; font-family: inherit; }
     <a class="header-btn filled" href="https://github.com/canton-network-devs/Canton-Developer-Hub/blob/main/Contributing.md" target="_blank" rel="noopener">Submit your tool</a>
   </div>
 </header>
-
 <div class="app-shell">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-label">Latest CIP</div>
@@ -576,7 +574,6 @@ const GISCUS_CATEGORY    = "Tools";
 const GISCUS_CATEGORY_ID = "DIC_kwDOROGJ0s4C95t0";
 const GISCUS_ORIGIN      = "https://giscus.app";
 const AI_PROXY_URL       = "/api/suggest";
-
 let TOOLS = [];
 let currentSlug = null, REACTION_COUNTS = {};
 let compareSelected = [];
@@ -594,9 +591,6 @@ function setHTML(id, html) {
 function escapeHTML(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-
-/* ── ANALYTICS (Vercel Web Analytics custom events — recorded on Pro/Enterprise only) ──
-   Max 2 data properties per event, values trimmed to 100 chars. Never send prompt text. */
 function track(name, data) {
   try {
     if (typeof window.va !== 'function') return;
@@ -607,14 +601,10 @@ function track(name, data) {
 }
 let promptSource = 'typed';
 const PAGE_LOADED = Date.now();
-
-/* Seconds → readable bucket, so the dashboard groups values instead of listing every number */
 function timeBucket(ms) {
   const s = ms / 1000;
   return s < 10 ? '<10s' : s < 30 ? '10-30s' : s < 60 ? '30-60s' : s < 180 ? '1-3m' : '3m+';
 }
-
-/* First meaningful action on the page (logged once) */
 const FIRST_ACTION_EVENTS = new Set(['AI Question','Quick Prompt','Tool Search','Tool Filter','Tool Link','Helpful Click','Compare Opened','Feed Click','Browse Tools Click','AI Tool Chip','Header Click']);
 let firstActionDone = false;
 const _track = track;
@@ -625,9 +615,6 @@ track = function (name, data) {
     _track('First Action', { action: name, after: timeBucket(Date.now() - PAGE_LOADED) });
   }
 };
-
-/* ── AI QUESTION TOPICS ──
-   Classifies questions in the browser and sends only fixed keywords — never the text people typed. */
 const TOPIC_KEYWORDS = {
   'Dev Fund':           /\b(dev ?fund|grants?|funding|milestones?|proposals?)\b/i,
   'SDKs':               /\b(sdks?|librar(y|ies)|npm|packages?)\b/i,
@@ -652,8 +639,6 @@ function classifyQuestion(text, cipNums) {
   const keywords = [...cips, ...matches.filter(m => !(topic === 'Dev Fund' && m === 'Dev Fund'))];
   return { topic, keywords: keywords.length ? keywords.join(', ') : 'none' };
 }
-
-/* State of the latest AI answer, for "did they use it" signals */
 let lastAnswer = null;
 function markAnswerUsed(via) {
   if (!lastAnswer || lastAnswer.used) return;
@@ -936,8 +921,6 @@ on('ai-response', 'click', e => {
   markAnswerUsed('tool chip');
   handleToolChip(slugify(name), name);
 });
-
-/* 👍 / 👎 and Copy answer */
 function resetAnswerActions() {
   const bar = $('ai-actions'); if (!bar) return;
   bar.classList.remove('visible');
@@ -967,7 +950,6 @@ on('ai-actions', 'click', async e => {
     setTimeout(() => { btn.textContent = 'Copy answer'; }, 2000);
   }
 });
-
 function handleToolChip(slug, name) {
   let card = document.querySelector(`.card[data-card-slug="${slug}"]`);
   if (!card) {
@@ -1081,7 +1063,6 @@ function resetFilters(query = '') {
 let searchTrackTimer;
 on('tool-search', 'input', e => {
   searchQ = e.target.value; renderTools();
-  // Log what people search for once they pause typing (1.5s), ignoring 1–2 char fragments
   clearTimeout(searchTrackTimer);
   const q = searchQ.trim();
   if (q.length >= 3) searchTrackTimer = setTimeout(() => track('Tool Search', { query: q.toLowerCase(), results: filteredTools().length }), 1500);
@@ -1137,7 +1118,6 @@ window.addEventListener('message', e => {
   if (msg.resizeHeight) { const l=panelBody.querySelector('.panel-loading'); if(l)l.style.display='none'; const i=panelBody.querySelector('iframe'); if(i)i.style.height=msg.resizeHeight+'px'; }
   if (msg.discussion && currentSlug) { const t=typeof msg.discussion.reactionCount==='number'?msg.discussion.reactionCount:Object.values(msg.discussion.reactions||{}).filter(v=>typeof v==='number').reduce((s,n)=>s+n,0); REACTION_COUNTS[currentSlug]=t; updateBadge(currentSlug,t); }
 });
-/* ── CLICK TRACKING (links) ── */
 document.addEventListener('click', e => {
   const a = e.target.closest('a'); if (!a) return;
   const card = a.closest('.card');
@@ -1151,15 +1131,12 @@ document.addEventListener('click', e => {
   if (a.closest('#youtube-feed'))      return track('Feed Click', { feed: 'youtube', title: a.querySelector('.video-title')?.textContent || '' });
   if (a.classList.contains('header-btn')) return track('Header Click', { button: a.textContent.trim() });
 });
-
-/* Did they ever scroll far enough to see tool cards? (fires once) */
 let directoryVia = 'scroll';
 document.addEventListener('click', e => {
   if (e.target.closest('.browse-link')) directoryVia = 'browse link';
   else if (e.target.closest('.ai-tool-chip')) directoryVia = 'ai tool chip';
 }, true);
 function watchDirectory() {
-  // "Reached" = first row of tool cards fully on screen above the bottom 25% of the viewport
   const firstCard = document.querySelector('#tool-grid .card');
   if (!firstCard || !('IntersectionObserver' in window)) return;
   const io = new IntersectionObserver(entries => {
@@ -1170,7 +1147,6 @@ function watchDirectory() {
   }, { threshold: [0.95], rootMargin: '0px 0px -25% 0px' });
   io.observe(firstCard);
 }
-
 function loadFeeds() {
   [fetchCIPAnnounce, fetchDevFundApprovals, fetchYouTube].forEach(fn => {
     try { fn(); } catch (e) { console.error(`[devhub] ${fn.name} failed:`, e); }
